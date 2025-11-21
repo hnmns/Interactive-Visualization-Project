@@ -18,14 +18,12 @@ This project is necessarily geospatial, with shipping routes being central to th
 
 ## Data Sources
 
-
-
 ### Data Source 1: NEI Shipping Lane Shapefiles
 
 URL: https://www.epa.gov/air-emissions-inventories/2014-national-emissions-inventory-nei-data
 
 
-This provides Rail and Commercial Marine shipping channels
+This provides Rail and Commercial Marine shipping channels.
 
 
 ### Data Source 2: US Army Corps of Engineers WCUS Trips (2023)
