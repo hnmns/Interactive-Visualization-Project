@@ -1,0 +1,127 @@
+<!DOCTYPE HTML>
+<!--
+	Story by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+
+	Adapted for Interactive Data Viz project
+-->
+<html>
+	<head>
+		<title>Story by HTML5 UP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets/css/my-custom-styles.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+
+		<!-- <link rel='stylesheet' href='https://unpkg.com/maplibre-gl@5.13.0/dist/maplibre-gl.css' /> Not Needed, breaks map -->
+		<script src='https://unpkg.com/maplibre-gl@5.13.0/dist/maplibre-gl.js'></script>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper" class="divided">
+
+				<!-- One -->
+					<section class="banner style1 orient-left content-align-left image-position-right fullscreen onload-image-fade-in onload-content-fade-right">
+						<div class="content">
+							<h1>Story</h1>
+							<p class="major">A (modular, highly tweakable) responsive one-page template designed by <a href="https://html5up.net">HTML5 UP</a> and released for free under the <a href="https://html5up.net/license">Creative Commons</a>.</p>
+							<!-- <ul class="actions stacked">
+								<li><a href="#first" class="button big wide smooth-scroll-middle">Get Started</a></li>
+							</ul> -->
+						</div>
+						<div class="image">
+							<img src="images/PaulRTregurtha_by_GusSchauer.jpg" alt="" />
+						</div>
+					</section>
+
+				
+					<section class="wrapper style1 align-center">
+						<div class="inner">
+							<h2>PROBABLY DON'T NEED 2ND TITLE</h2>
+							<p>HERE IS WHERE DA MAP GOES</p>
+							<div id="map"></div>
+							<script>
+								const map = new maplibregl.Map({
+									container: 'map', // container id
+									style: 'https://demotiles.maplibre.org/style.json', // style URL
+									center: [-82.984912, 45.564666], // starting position [lng, lat]
+									zoom: 5, // starting zoom
+									maplibreLogo: false
+								});
+
+
+								map.on('load', () => {
+									map.addSource('Marine_Highways', {
+										type: 'geojson',
+										data: '../data/geodata/NTAD_Marine_Highways.geojson'
+									});
+
+									map.addLayer({
+										id: 'marineHighways',
+										type: 'line',
+										source: 'Marine_Highways',
+										paint: {
+										'line-color': '#f72019',
+										'line-opacity': 0.8
+										}
+									});
+
+									map.addSource('route', {
+										'type': 'geojson',
+										'data': {
+											'type': 'Feature',
+											'properties': {},
+											'geometry': {
+												'type': 'LineString',
+												'coordinates': [
+													[-81.984912, 45.564666],
+													[-83.984912, 45.564666],
+												]
+											}
+										}
+									});
+									map.addLayer({
+										'id': 'route',
+										'type': 'line',
+										'source': 'route',
+										'layout': {
+											'line-join': 'round',
+											'line-cap': 'round'
+										},
+										'paint': {
+											'line-color': '#888',
+											'line-width': 8
+										}
+									});
+								});
+							</script>
+						</div>
+
+					</section>
+
+				<!-- Footer -->
+					<footer class="wrapper style1 align-center">
+						<div class="inner">
+							<ul class="icons">
+								<li><a href="#" class="icon brands style2 fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+							</ul>
+							<p>Adapted from Story theme by <a href="https://html5up.net">HTML5 UP</a>.</p>
+						</div>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
