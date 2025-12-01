@@ -53,11 +53,11 @@
 								});
 
 
-								map.on('load', () => {
-									map.addSource('Marine_Highways', {
-										type: 'geojson',
-										data: '../data/geodata/NTAD_Marine_Highways.geojson'
-									});
+								map.on('load', async () => {
+									// map.addSource('Marine_Highways', {
+									// 	type: 'geojson',
+									// 	data: '../data/geodata/NTAD_Marine_Highways.geojson'
+									// });
 									// map.addLayer({
 									// 	id: 'marineHighways',
 									// 	type: 'line',
@@ -68,20 +68,58 @@
 									// 	}
 									// });
 
+									const rDuluthGary = await (await fetch('../data/geodata/arthurmanderson_Duluth_to_Gary_Line_CLEAN.geojson')).json();
 									map.addSource('Duluth_to_Gary', {
 										type: 'geojson',
-										data: '../data/geodata/arthurmanderson_Duluth_to_Gary_Line.geojson'
+										data: { 
+											type: 'Feature', 
+											geometry: { 
+												type: 'LineString', coordinates: [] 
+											} 
+										}
 									});
 									map.addLayer({
-										id: 'DuluthGary',
+										id: 'Duluth_to_Gary',
 										type: 'line',
 										source: 'Duluth_to_Gary',
 										paint: {
-											'line-width': 4,
-											'line-color': '#888',
-											'line-opacity': .8
+											'line-color': '#000000',
+											'line-width': 5
 										}
-									});
+									})
+
+									// https://maplibre.org/maplibre-gl-js/docs/examples/animate-a-line/
+									function animateRoute(sourceDrawTo, coords) {
+										const stepSize = 30;
+										const interval = 5;
+
+										const cumulativeData = {
+											type: 'Feature',
+											geometry: { 
+												type: 'LineString',
+												coordinate: []
+											}
+										};
+
+										let i = 0;
+										let id;
+
+										function frame() {
+											if (i < coords.length) { // Not all points drawn yet
+												i += stepSize;
+												cumulativeData.geometry.coordinates = coords.slice(0, i);
+												const src = map.getSource(sourceDrawTo);
+												src.setData(cumulativeData);
+												id = setTimeout(() => requestAnimationFrame(frame), interval);
+											}
+										}
+
+										requestAnimationFrame(frame);
+									}
+
+									const animDuluthGary = animateRoute('Duluth_to_Gary', rDuluthGary.features[0].geometry.coordinates);
+
+
 								});
 							</script>
 						</div>
