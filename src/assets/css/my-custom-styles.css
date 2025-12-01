@@ -6,14 +6,74 @@
   height: auto;
 }
 
+#map-section {
+  position: relative;
+  overflow: visible;
+  text-align: left;
+}
+
+.inner {
+  position: static;
+  top: auto;
+  height: auto;
+  z-index: auto;
+}
+
+/* https://github.com/russellsamora/scrollama/blob/v2/docs/sticky-side/index.html */
+#scrolly {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: stretch !important;
+  justify-content: space-between !important;
+  background: #f3f3f3;
+  min-height: 100vh;
+  width: 100%;
+}
+
+#sidebar {
+  flex: 0 0 25rem;
+  padding: 1rem;
+  max-width: 30vw;
+  overflow-y: auto;
+  background: #fff;
+  text-align: left;
+}
+
+#map-container {
+  position: sticky;
+  top: 0;
+  flex: 1;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.step {
+  background: #3b3b3b;
+  color: #fff;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 4px;
+}
+
+.step.is-active {
+  background: goldenrod;
+  color: #3b3b3b;
+}
+
 #map {
   display: block;
   width: 100%;
-  height: 600px;
+  height: 100%;
+  top: 0;
   overflow: hidden;
-  flex-shrink: 0;
 }
 
-.wrapper.style1 > .inner > #map + * {
-  margin-top: 2rem;
+#chart-overlay {
+  position: absolute;
+  top: 20%;
+  left: 60%;
+  width: 50px;
+  height: 40px;
+  background: rgba(255,255,255,0.25);
 }

@@ -1,151 +1,290 @@
 <!DOCTYPE HTML>
-<!--
-	Story by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
-
-	Adapted for Interactive Data Viz project
--->
 <html>
 	<head>
-		<title>Story by HTML5 UP</title>
+		<title>US Domestic Iron</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<link rel="stylesheet" href="assets/css/my-custom-styles.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-
-		<!-- <link rel='stylesheet' href='https://unpkg.com/maplibre-gl@5.13.0/dist/maplibre-gl.css' /> Not Needed, breaks map -->
 		<script src='https://unpkg.com/maplibre-gl@5.13.0/dist/maplibre-gl.js'></script>
+		<script src="https://d3js.org/d3.v7.min.js"></script>
 	</head>
 	<body class="is-preload">
 
-		<!-- Wrapper -->
-			<div id="wrapper" class="divided">
+		<div id="wrapper" class="divided">
+            <section class="banner style1 orient-left content-align-left image-position-right fullscreen onload-image-fade-in onload-content-fade-right">
+                <div class="content">
+                    <h1>US iron ore shipping on the Great Lakes</h1>
+                    <p class="major">Adapted from Story theme by <a href="https://html5up.net">HTML5 UP</a>.</p>
+                </div>
+                <div class="image">
+                    <img src="images/PaulRTregurtha_by_GusSchauer.jpg" alt="" />
+                </div>
+            </section>
 
-				<!-- One -->
-					<section class="banner style1 orient-left content-align-left image-position-right fullscreen onload-image-fade-in onload-content-fade-right">
-						<div class="content">
-							<h1>Story</h1>
-							<p class="major">A (modular, highly tweakable) responsive one-page template designed by <a href="https://html5up.net">HTML5 UP</a> and released for free under the <a href="https://html5up.net/license">Creative Commons</a>.</p>
-							<!-- <ul class="actions stacked">
-								<li><a href="#first" class="button big wide smooth-scroll-middle">Get Started</a></li>
-							</ul> -->
-						</div>
-						<div class="image">
-							<img src="images/PaulRTregurtha_by_GusSchauer.jpg" alt="" />
-						</div>
-					</section>
+				<h2>Scrollytelling</h2>
 
-				
-					<section class="wrapper style1 align-center">
-						<div class="inner">
-							<h2>PROBABLY DON'T NEED 2ND TITLE</h2>
-							<p>HERE IS WHERE DA MAP GOES</p>
-							<div id="map"></div>
-							<script>
-								const map = new maplibregl.Map({
-									container: 'map', // container id
-									style: 'https://demotiles.maplibre.org/style.json', // style URL
-									center: [-82.984912, 45.564666], // starting position [lng, lat]
-									zoom: 5, // starting zoom
-									maplibreLogo: false
-								});
+				<section id="scrolly">
+					<article id="sidebar">
+						<div class="step" data-lng="-92.1" data-lat="46.78" data-zoom="7">Duluth-Superior</div>
+						<!-- <div class="step" data-lng="-87.2" data-lat="41.6" data-zoom="8">Gary</div> -->
+					</article>
+
+					<script
+						src="https://www.unpkg.com/turf@2.0.0/turf.min.js"
+						charset="utf-8"
+					></script>
+
+					<figure id="map-container" style="position: relative;">
+						<div id="map"></div>
+						<div id="chart-overlay"></div>
+					</figure>
+				</section>
+
+				<script>
+					const map = new maplibregl.Map({
+						container: 'map',
+						style: 'https://tiles.openfreemap.org/styles/bright',
+						center: [-82.984912, 45.564666],
+						zoom: 5,
+						maplibreLogo: false,
+						interactive: true
+					});
+					
+					map.on('load', async () => {
+
+						// D3 CHART
+						async function load_cargo_data() {
+							const duluthCargo = await d3.csv('../data/clean/cargoes/outbound/duluth_superior.csv');
+							console.log(duluthCargo);
+							return duluthCargo;
+						}
+						const duluthCargo = await load_cargo_data();
+						const dCargo = duluthCargo.map(d => {
+							return {
+							"CompletedYear":d.CompletedYear,
+							"ShortTons":+d.ShortTons
+							}
+						});
+						// console.log(dCargo);
+						// const duluthCargo22 = duluthCargo.find(d => d.CompletedYear === "2022");
+						// console.log(duluthCargo22);
+						let width = 300;
+						let height = 200;
+						let margin = 28;
+						let barwidth = 20;
+						let div_chart = d3
+							.select("#chart-overlay")
+							.append("svg")
+							.attr("width", width)
+							.attr("height", height)
+							.attr("viewBox", "0 0 320 200")
+							.style("background-color", "#ffffffcc");
+
+						const xScale = d3.scaleBand(dCargo.map(c => c.CompletedYear), [0,width]);
+						let yScale = d3.scaleLinear(domain=[0,14944139], range=[height-margin, 0]);
+
+						div_chart.selectAll("rect")
+							.data(dCargo)
+							.join("rect")
+								.attr("transform", `translate(${margin/2}, 0)`)
+								.attr("x", (d) => xScale(d.CompletedYear))
+								.attr("y", (d) => yScale(d.ShortTons))
+								.attr("height", (d) => yScale(0) - yScale(d.ShortTons))
+								.attr("width", barwidth)
+								.attr("fill", "black");
+
+						div_chart.append("g")
+						.attr("transform", `translate(${margin/2},${yScale(margin)})`)
+						.call(d3.axisBottom(xScale).ticks(3).tickSize(2))
+						.style("font-size", "8pt")
+						.call(g => g.append("text")
+							.attr("transform", `translate(${width/2-margin/2},${margin})`)
+							.text("Duluth Outbound Iron Ore Cargoes (short tons)")
+							.attr("fill", "black")
+							.style("font-size", "8pt")
+							// .style("font-size", "8pt")
+						);
+
+						// USACE PORT GEOGRAPHIES
+						portData = await (await fetch('../data/geodata/USACE_port_and_stat_areas.geojson')).json();
+						map.addSource('USACE_Ports', {
+							type: 'geojson',
+							data: { 
+								type: 'Feature', 
+								geometry: { type: 'Polygon', coordinates: [] } 
+							}
+						});
+						map.addLayer({
+							id: 'USACE_Ports_fill',
+							type: 'fill',
+							source: 'USACE_Ports',
+							paint: { 
+								'fill-color': '#788bd6'
+							}
+						});
+						map.addLayer({
+							id: 'USACE_Ports_line',
+							type: 'line',
+							source: 'USACE_Ports',
+							paint: { 
+								'line-color': '#000000', 'line-width': 3
+							}
+						});
+						map.getSource('USACE_Ports').setData(portData);
 
 
-								map.on('load', async () => {
-									// map.addSource('Marine_Highways', {
-									// 	type: 'geojson',
-									// 	data: '../data/geodata/NTAD_Marine_Highways.geojson'
-									// });
-									// map.addLayer({
-									// 	id: 'marineHighways',
-									// 	type: 'line',
-									// 	source: 'Marine_Highways',
-									// 	paint: {
-									// 		'line-color': '#f72019',
-									// 		'line-opacity': 0.8
-									// 	}
-									// });
+						// ANIMATION
+						
+						// AI Use (ChatGPT): "Preferred approach for anchoring d3 charts on maplibre maps to follow flyto events?"
+							// This was not helpful. I need to ask a human.
+						// https://maplibre.org/maplibre-gl-js/docs/examples/add-custom-icons-with-markers/
+						// TRY THIS NEXT: To make a d3 chart that follows our zooming and scaling
+						
+						map.addSource('Duluth_to_Gary', {
+							type: 'geojson',
+							data: { 
+								type: 'Feature', 
+								geometry: { type: 'LineString', coordinates: [] } 
+							}
+						});
+						map.addLayer({
+							id: 'Duluth_to_Gary',
+							type: 'line',
+							source: 'Duluth_to_Gary',
+							paint: { 'line-color': '#000000', 'line-width': 5 }
+						});
 
-									const rDuluthGary = await (await fetch('../data/geodata/arthurmanderson_Duluth_to_Gary_Line_CLEAN.geojson')).json();
-									map.addSource('Duluth_to_Gary', {
-										type: 'geojson',
-										data: { 
-											type: 'Feature', 
-											geometry: { 
-												type: 'LineString', coordinates: [] 
-											} 
-										}
-									});
-									map.addLayer({
-										id: 'Duluth_to_Gary',
-										type: 'line',
-										source: 'Duluth_to_Gary',
-										paint: {
-											'line-color': '#000000',
-											'line-width': 5
-										}
-									})
+						let counter = 0;
+						let routeData;
+						// This is an example voyage of an iron ore-carrying lake freighter
+						routeData = await (await fetch('../data/geodata/arthurmanderson_Duluth_to_Gary_Line_CLEAN.geojson')).json();
+						const steps = routeData.features[0].geometry.coordinates.length - 1;
+						
+						// Calling animateRoute() now should draw on top of the USACE_Ports_fill Polygons
+						const animDuluthGary = animateRoute('Duluth_to_Gary', routeData.features[0].geometry.coordinates);
 
-									// https://maplibre.org/maplibre-gl-js/docs/examples/animate-a-line/
-									function animateRoute(sourceDrawTo, coords) {
-										const stepSize = 30;
-										const interval = 5;
-
-										const cumulativeData = {
-											type: 'Feature',
-											geometry: { 
-												type: 'LineString',
-												coordinate: []
-											}
-										};
-
-										let i = 0;
-										let id;
-
-										function frame() {
-											if (i < coords.length) { // Not all points drawn yet
-												i += stepSize;
-												cumulativeData.geometry.coordinates = coords.slice(0, i);
-												const src = map.getSource(sourceDrawTo);
-												src.setData(cumulativeData);
-												id = setTimeout(() => requestAnimationFrame(frame), interval);
-											}
-										}
-
-										requestAnimationFrame(frame);
+						// The rest of map.on()... comes from docs example:
+							// https://maplibre.org/maplibre-gl-js/docs/examples/animate-a-point-along-a-route/
+						// Use default airport icon for now
+						const point = {
+							'type': 'FeatureCollection',
+							'features': [
+								{
+									'type': 'Feature',
+									'properties': {},
+									'geometry': {
+										'type': 'Point',
+										'coordinates': origin
 									}
+								}
+							]
+						};
+						map.addSource('point', {
+							'type': 'geojson',
+							'data': point
+						});
+						
+						map.addLayer({
+							'id': 'point',
+							'source': 'point',
+							'type': 'symbol',
+							'layout': {
+								'icon-image': 'airport',
+								'icon-rotate': ['get', 'bearing'],
+								'icon-rotation-alignment': 'map',
+								'icon-overlap': 'always',
+								'icon-ignore-placement': true
+							}
+						});
 
-									const animDuluthGary = animateRoute('Duluth_to_Gary', rDuluthGary.features[0].geometry.coordinates);
+						function animate() {
+							// Update point geometry to a new position based on counter denoting
+							// the index to access the arc.
+							point.features[0].geometry.coordinates =
+								routeData.features[0].geometry.coordinates[counter];
+
+							// Calculate the bearing to ensure the icon is rotated to match the route arc
+							// The bearing is calculate between the current point and the next point, except
+							// at the end of the arc use the previous point and the current point
+							point.features[0].properties.bearing = turf.bearing(
+								turf.point(
+									routeData.features[0].geometry.coordinates[
+										counter >= steps ? counter - 1 : counter
+									]
+								),
+								turf.point(
+									routeData.features[0].geometry.coordinates[
+										counter >= steps ? counter : counter + 1
+									]
+								)
+							);
+
+							// Update the source with this new data.
+							map.getSource('point').setData(point);
+
+							// Request the next frame of animation so long the end has not been reached.
+							if (counter < steps) {
+								requestAnimationFrame(animate);
+							}
+
+							counter = counter + 3; // Point animation speed, lots of artifacts fading in and out
+						}
+						animate(counter);
+					});
+
+					// Drawing curves from docs example: 
+						// https://maplibre.org/maplibre-gl-js/docs/examples/animate-a-line/
+					// Calling animateRoute outside map.on() must draw the route AFTER the map events have resolved
+					function animateRoute(sourceDrawTo, coords) {
+						const speed = 800;
+
+						const cumulativeData = {
+							type: 'Feature',
+							geometry: { 
+								type: 'LineString',
+								coordinates: []
+							}
+						};
+
+						let i = 0;
+						let prev = 0;
+						let id;
+
+						// AI Use (ChatGPT): "Preferred method to adjust draw speed of animated geometries in maplibre?"
+						// I started by using naive Timeout-based method, not good ("throttling")
+						id = requestAnimationFrame(function step(timestamp) {
+							const secsElapsed = (timestamp - prev) / 1000;
+							prev = timestamp;
+
+							i += speed * secsElapsed;
+
+							if (i < coords.length) {
+								// cumulativeData.geometry.coordinates = coords.slice(0, Math.floor(i));
+								cumulativeData.geometry.coordinates.push(coords[Math.floor(i)]);
+								map.getSource(sourceDrawTo).setData(cumulativeData);
+								id = requestAnimationFrame(step);
+							} else { // Reached end of line, just set it to the whole data set
+								cumulativeData.geometry.coordinates = coords;
+								map.getSource(sourceDrawTo).setData(cumulativeData);
+								cancelAnimationFrame(id);
+							}
+						});
+
+					}
 
 
-								});
-							</script>
-						</div>
+				</script>
 
-					</section>
+		</div>
 
-				<!-- Footer -->
-					<footer class="wrapper style1 align-center">
-						<div class="inner">
-							<ul class="icons">
-								<li><a href="#" class="icon brands style2 fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
-							</ul>
-							<p>Adapted from Story theme by <a href="https://html5up.net">HTML5 UP</a>.</p>
-						</div>
-					</footer>
-
-			</div>
-
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
-
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/jquery.scrollex.min.js"></script>
+		<script src="assets/js/jquery.scrolly.min.js"></script>
+		<script src="assets/js/browser.min.js"></script>
+		<script src="assets/js/breakpoints.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<script src="assets/js/main.js"></script>
 	</body>
 </html>

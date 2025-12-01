@@ -1,0 +1,180 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>US Domestic Iron</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets/css/my-custom-styles.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<script src='https://unpkg.com/maplibre-gl@5.13.0/dist/maplibre-gl.js'></script>
+		<script src="scrollama.js" type="text/javascript"></script>
+		<body class="is-preload">
+
+		<div id="wrapper" class="divided">
+            <section class="banner style1 orient-left content-align-left image-position-right fullscreen onload-image-fade-in onload-content-fade-right">
+                <div class="content">
+                    <h1>US iron ore shipping on the Great Lakes</h1>
+                    <p class="major">Adapted from Story theme by <a href="https://html5up.net">HTML5 UP</a>.</p>
+                </div>
+                <div class="image">
+                    <img src="images/PaulRTregurtha_by_GusSchauer.jpg" alt="" />
+                </div>
+            </section>
+
+				<h2>Scrollytelling</h2>
+
+				<section id="scrolly">
+					<article id="sidebar">
+						<div class="step" data-lng="-92.1" data-lat="46.78" data-zoom="7">Duluth-Superior</div>
+						<!-- <div class="step" data-lng="-87.2" data-lat="41.6" data-zoom="8">Gary</div> -->
+					</article>
+
+					<figure id="map-container">
+						<div id="map"></div>
+					</figure>
+				</section>
+
+				<script>
+					const map = new maplibregl.Map({
+						container: 'map',
+						style: 'https://demotiles.maplibre.org/style.json',
+						center: [-82.984912, 45.564666],
+						zoom: 5,
+						maplibreLogo: false,
+						interactive: false
+					});
+
+					let routeData;
+
+					// AI Use (ChatGPT): "Preferred approach for scrollytelling with scrollama and maplibre events?" 
+					// Using Scrollama to trigger maplibre flyto() events:
+						// https://github.com/digidem/maplibre-storymap/tree/main
+					const scroller = scrollama();
+					map.on('load', async () => {
+						routeData = await (await fetch('../data/geodata/arthurmanderson_Duluth_to_Gary_Line_CLEAN.geojson')).json();
+
+						map.addSource('Duluth_to_Gary', {
+							type: 'geojson',
+							data: { 
+								type: 'Feature', 
+								geometry: { type: 'LineString', coordinates: [] } 
+							}
+						});
+						map.addLayer({
+							id: 'Duluth_to_Gary',
+							type: 'line',
+							source: 'Duluth_to_Gary',
+							paint: { 'line-color': '#000000', 'line-width': 5 }
+						});
+
+						portData = await (await fetch('../data/geodata/USACE_port_and_stat_areas.geojson')).json();
+						map.addSource('USACE_Ports', {
+							type: 'geojson',
+							data: { 
+								type: 'Feature', 
+								geometry: { type: 'Polygon', coordinates: [] } 
+							}
+						});
+						map.addLayer({
+							id: 'USACE_Ports_fill',
+							type: 'fill',
+							source: 'USACE_Ports',
+							paint: { 'fill-color': '#788bd6'}
+						});
+						map.addLayer({
+							id: 'USACE_Ports_line',
+							type: 'line',
+							source: 'USACE_Ports',
+							paint: { 'line-color': '#000000', 'line-width': 3}
+						});
+						map.getSource('USACE_Ports').setData(portData);
+						
+
+						// const steps = document.querySelectorAll('.step');
+						// const observer = new IntersectionObserver(entries => {
+						//     entries.forEach(entry => {
+						//     if (entry.isIntersecting) {
+						//         steps.forEach(s => s.classList.remove('is-active'));
+						//         entry.target.classList.add('is-active');
+
+						//         const lng = parseFloat(entry.target.dataset.lng);
+						//         const lat = parseFloat(entry.target.dataset.lat);
+						//         const zoom = parseFloat(entry.target.dataset.zoom);
+
+						//         map.flyTo({
+						//             center: [lng, lat],
+						//             zoom: zoom,
+						//             speed: 0.8,
+						//             curve: 1.2,
+						//             essential: true
+						//         });
+						//     }
+						//     });
+						// }, { threshold: 0.5 });
+
+						// steps.forEach(step => observer.observe(step));
+						
+
+						scroller
+							.setup({
+								step: ".step", // elements that trigger scroll
+								offset: 0.6,   // trigger at 60% viewport height
+								debug: false,  // set true to visualize trigger positions
+							})
+							.onStepEnter((response) => {
+								// response.element, response.index, response.direction
+								const step = response.element;
+								document.querySelectorAll(".step").forEach(s => s.classList.remove("is-active"));
+								step.classList.add("is-active");
+
+								const lng = parseFloat(step.dataset.lng);
+								const lat = parseFloat(step.dataset.lat);
+								const zoom = parseFloat(step.dataset.zoom);
+								map.flyTo({
+								center: [lng, lat],
+								zoom: zoom,
+								speed: 0.8,
+								curve: 1.2,
+								essential: true,
+								});
+							})
+							.onStepExit((response) => {
+								// Optional: handle exit events if needed
+							});
+
+						const animDuluthGary = animateRoute('Duluth_to_Gary', routeData.features[0].geometry.coordinates);
+
+					});
+
+					function animateRoute(coords) {
+						const source = map.getSource('Duluth_to_Gary');
+						let i = 0;
+						function frame() {
+							if (i < coords.length) {
+								i += 20;
+								source.setData({
+									type: 'Feature',
+									geometry: { type: 'LineString', coordinates: coords.slice(0, i) }
+								});
+								requestAnimationFrame(frame);
+							}
+						}
+						requestAnimationFrame(frame);
+					}
+
+					window.addEventListener("resize", scroller.resize);
+
+
+				</script>
+		</div>
+
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/jquery.scrollex.min.js"></script>
+		<script src="assets/js/jquery.scrolly.min.js"></script>
+		<script src="assets/js/browser.min.js"></script>
+		<script src="assets/js/breakpoints.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<script src="assets/js/main.js"></script>
+	</body>
+</html>
