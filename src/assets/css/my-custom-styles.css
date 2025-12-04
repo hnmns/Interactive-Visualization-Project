@@ -6,6 +6,10 @@
   height: auto;
 }
 
+.divided > section {
+overflow: visible !important;
+}
+
 #map-section {
   position: relative;
   overflow: visible;
@@ -19,14 +23,22 @@
   z-index: auto;
 }
 
+#scrolly-wrapper {
+  position: relative;
+  overflow: visible;
+  margin: 0;
+  padding: 0;
+  transform: none
+}
+
 /* https://github.com/russellsamora/scrollama/blob/v2/docs/sticky-side/index.html */
 #scrolly {
-  display: flex !important;
+  display: flex;
+  align-items: flex-start;
   flex-direction: row !important;
-  align-items: stretch !important;
   justify-content: space-between !important;
   background: #f3f3f3;
-  min-height: 100vh;
+  /* min-height: auto; */
   width: 100%;
 }
 
@@ -34,7 +46,8 @@
   flex: 0 0 25rem;
   padding: 1rem;
   max-width: 30vw;
-  overflow-y: auto;
+  overflow: visible;
+  padding: 1rem;
   background: #fff;
   text-align: left;
 }
@@ -42,8 +55,9 @@
 #map-container {
   position: sticky;
   top: 0;
-  flex: 1;
   height: 100vh;
+  flex: 1;
+  align-self: flex-start;
   margin: 0;
   padding: 0;
 }
@@ -54,6 +68,7 @@
   padding: 1.5rem;
   margin-bottom: 2rem;
   border-radius: 4px;
+  margin-bottom: 60vh;
 }
 
 .step.is-active {
