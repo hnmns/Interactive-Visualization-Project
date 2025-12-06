@@ -30,11 +30,20 @@
 					<article id="sidebar">
 						<div class="step" data-lng="-98.58" data-lat="39.58" data-zoom="3">Iron in the US</div>
 						<div class="step" data-lng="-92.1" data-lat="46.78" data-zoom="7">Duluth-Superior</div>
-						<div class="step" data-lng="-87.45" data-lat="41.65" data-zoom="8">Indiana Harbor</div>
+						<div class="step" data-lng="-88.03" data-lat="46.32" data-zoom="6">Major Outbound Ports</div>
+						<div class="step" data-lng="-84.34" data-lat="46.25" data-zoom="7">Soo Locks</div>
+						<div class="step" data-lng="-86.95" data-lat="42.0" data-zoom="8">Indiana Harbor</div>
+						<div class="step" data-lng="-84.75" data-lat="43.87" data-zoom="6">Major Inbound Ports</div>
 					</article>
+
+					<script
+						src="https://www.unpkg.com/turf@2.0.0/turf.min.js"
+						charset="utf-8"
+					></script>
 
 					<figure id="map-container">
 						<div id="map"></div>
+						<!-- <div id="nonusa-mask-overlay"></div> -->
 					</figure>
 				</section>
 			</div>
@@ -42,9 +51,10 @@
 			<script>
 				const map = new maplibregl.Map({
 					container: 'map',
-					style: 'https://demotiles.maplibre.org/style.json',
-					center: [-82.984912, 45.564666],
-					zoom: 5,
+					style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
+					// https://tiles.openfreemap.org/styles/positron
+					center: [-98.50, 39.50],
+					zoom: 1,
 					maplibreLogo: false,
 					interactive: false
 				});
@@ -56,8 +66,22 @@
 					// https://github.com/digidem/maplibre-storymap/tree/main
 				const scroller = scrollama();
 				map.on('load', async () => {
-					routeData = await (await fetch('../data/geodata/arthurmanderson_Duluth_to_Gary_Line_CLEAN.geojson')).json();
 
+					// Prevent my layers from covering up basemap city names
+					map.on('styledata', () => {
+						const layers = map.getStyle().layers;
+
+						layers.forEach(l => {
+							if (l.type === 'symbol') {
+							try {
+								map.moveLayer(l.id);
+							} catch (_) {}
+							}
+						});
+					});
+
+					// Real Arthur M. Anderson route from Duluth to Gary in 2021
+					routeData = await (await fetch('../data/geodata/arthurmanderson_Duluth_to_Gary_Line_CLEAN.geojson')).json();
 					map.addSource('Duluth_to_Gary', {
 						type: 'geojson',
 						data: { 
@@ -84,41 +108,94 @@
 						id: 'USACE_Ports_fill',
 						type: 'fill',
 						source: 'USACE_Ports',
-						paint: { 'fill-color': '#788bd6'}
+						paint: { 
+							'fill-color': '#C46F60',
+							'fill-opacity': 0.0
+						}
 					});
 					map.addLayer({
 						id: 'USACE_Ports_line',
 						type: 'line',
 						source: 'USACE_Ports',
-						paint: { 'line-color': '#000000', 'line-width': 3}
+						paint: { 
+							'line-color': '#000000', 
+							'line-opacity': 0.0,
+							'line-width': 2,
+							'line-dasharray': [2, 3]
+						}
 					});
 					map.getSource('USACE_Ports').setData(portData);
+
+					// Highlight Minnesota and Michigan
+					mnmiData = await (await fetch('../data/geodata/minnesota_michigan_borders.geojson')).json();
+					map.addSource("mnmi", {
+						type: "geojson",
+						data:  {
+							type: "Feature",
+							geometry: {
+								type: "Polygon",
+								coordinates: []
+							}
+						}
+					});
+					map.addLayer({
+						id: "mnmi-fill",
+						type: "fill",
+						source: "mnmi",
+						paint: {
+							'fill-color': '#C46F60',
+							'fill-opacity': 0.0
+						}
+					});
+					map.getSource('mnmi').setData(mnmiData);
+
+					// Highlight USA, darken/fade out rest of world
+					usaData = await (await fetch('../data/geodata/us_lower_48.geojson')).json();
+					map.addSource("nonusa-mask", {
+						type: "geojson",
+						data:  {
+							type: "Feature",
+							geometry: {
+								type: "Polygon",
+								coordinates: [
+									[
+										[-180, -90],
+										[180, -90],
+										[180, 90],
+										[-180, 90],
+										[-180, -90]
+									],
+									usaData.features[0].geometry.coordinates[0]
+								]
+							}
+						}
+					});
+					map.addLayer({
+						id: "nonusa-fade",
+						type: "fill",
+						source: "nonusa-mask",
+						paint: {
+							'fill-color': '#000000',
+							'fill-opacity': 0.15
+						}
+					});
 					
 
-					// const steps = document.querySelectorAll('.step');
-					// const observer = new IntersectionObserver(entries => {
-					//     entries.forEach(entry => {
-					//     if (entry.isIntersecting) {
-					//         steps.forEach(s => s.classList.remove('is-active'));
-					//         entry.target.classList.add('is-active');
+					usacanData = await (await fetch('../data/geodata/usa_can_border.geojson')).json();
+					map.addSource('usa_can_border',{
+						type: 'geojson',
+						data: usacanData
+					});
+					map.addLayer({
+						id: 'usa_can_border_line',
+						type: 'line',
+						source: 'usa_can_border',
+						paint: {
+							'line-color': 'black',
+							'line-opacity': 0.65
+						}
+					})
 
-					//         const lng = parseFloat(entry.target.dataset.lng);
-					//         const lat = parseFloat(entry.target.dataset.lat);
-					//         const zoom = parseFloat(entry.target.dataset.zoom);
-
-					//         map.flyTo({
-					//             center: [lng, lat],
-					//             zoom: zoom,
-					//             speed: 0.8,
-					//             curve: 1.2,
-					//             essential: true
-					//         });
-					//     }
-					//     });
-					// }, { threshold: 0.5 });
-
-					// steps.forEach(step => observer.observe(step));
-					
 
 					scroller
 						.setup({
@@ -127,20 +204,60 @@
 							debug: false,  // set true to visualize trigger positions
 						})
 						.onStepEnter((response) => {
-							// response.element, response.index, response.direction
+							// Highlighting current step in the sidebar
 							const step = response.element;
 							document.querySelectorAll(".step").forEach(s => s.classList.remove("is-active"));
 							step.classList.add("is-active");
 
+							// Scroll sections
+							const i = response.index;
+							map.setPaintProperty('nonusa-fade', 'fill-opacity-transition', { duration: 2500 });
+							map.setPaintProperty('mnmi-fill', 'fill-opacity-transition', { duration: 2500 });
+							map.setPaintProperty('USACE_Ports_fill', 'fill-opacity-transition', { duration: 2500 });
+
+							// Step 1: Full USA view, highlighting MN and MI, lowlight rest of world
+							if (i === 0) {
+								map.setPaintProperty('nonusa-fade', 'fill-opacity', 0.15);
+								map.setPaintProperty('mnmi-fill', 'fill-opacity', 0.65);
+								map.setPaintProperty('USACE_Ports_fill', 'fill-opacity', 0.0)
+								map.setPaintProperty('USACE_Ports_line', 'line-opacity', 0.0)
+							}
+							// Step 2: Duluth and USACE port zones
+							else if (i === 1) {
+								map.setPaintProperty('nonusa-fade', 'fill-opacity', 0.025);
+								map.setPaintProperty('mnmi-fill',   'fill-opacity', 0.1);
+								// map.setPaintProperty('mnmi-fill', 'fill-opacity', 0.65);
+								map.setPaintProperty('USACE_Ports_fill', 'fill-opacity', 0.5)
+								map.setPaintProperty('USACE_Ports_line', 'line-opacity', 0.5)
+							}
+							// Step 3: Outbound ports
+							else if (i === 2) {
+								map.setPaintProperty('mnmi-fill', 'fill-opacity', 0.0);
+							}
+							// Step 4: Soo Locks
+							else if (i === 3) {
+								map.setPaintProperty('mnmi-fill', 'fill-opacity', 0.0);
+							}
+							// Step 5: Inbound ports
+							else if (i === 4) {
+								map.setPaintProperty('mnmi-fill', 'fill-opacity', 0.0);
+							}
+							// Step 6: Summary
+							else if (i === 5) {
+								map.setPaintProperty('mnmi-fill', 'fill-opacity', 0.0);
+							}
+
+
+							// Map events
 							const lng = parseFloat(step.dataset.lng);
 							const lat = parseFloat(step.dataset.lat);
 							const zoom = parseFloat(step.dataset.zoom);
 							map.flyTo({
-							center: [lng, lat],
-							zoom: zoom,
-							speed: 0.6,
-							curve: 1.2,
-							essential: true,
+								center: [lng, lat],
+								zoom: zoom,
+								speed: 0.4,
+								curve: 1.2,
+								essential: true,
 							});
 						})
 						.onStepExit((response) => {
@@ -151,6 +268,7 @@
 
 				});
 
+				
 				function animateRoute(coords) {
 					const source = map.getSource('Duluth_to_Gary');
 					let i = 0;

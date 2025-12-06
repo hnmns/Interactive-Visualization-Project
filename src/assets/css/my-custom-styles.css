@@ -44,11 +44,10 @@ overflow: visible !important;
 
 #sidebar {
   flex: 0 0 25rem;
-  padding: 1rem;
-  max-width: 30vw;
+  /* padding: 1rem; */
+  max-width: 28vw;
   overflow: visible;
-  padding: 1rem;
-  background: #fff;
+  background: #ffffff51;
   text-align: left;
 }
 
@@ -63,17 +62,31 @@ overflow: visible !important;
 }
 
 .step {
-  background: #3b3b3b;
+  background: #3b3b3b4a;
   color: #fff;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-  border-radius: 4px;
-  margin-bottom: 60vh;
+  text-align: center;
+  /* padding-left: 1.5rem;
+  padding-right: 1.5rem; */
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  /* border-radius: 4px; */
+  margin-top: 30vh;
+  margin-bottom: 30vh;
 }
 
 .step.is-active {
-  background: goldenrod;
-  color: #3b3b3b;
+  background: rgb(157, 176, 219);
+  color: #000000;
+  font-weight: bold;
+}
+
+#nonusa-mask-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.25);
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  z-index: 5;
 }
 
 #map {
