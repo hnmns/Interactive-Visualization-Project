@@ -28,8 +28,8 @@
 			<div id="scrolly-wrapper">
 				<section id="scrolly">
 					<article id="sidebar">
-						<div class="step" data-lng="-98.58" data-lat="39.58" data-zoom="3">Iron in the US</div>
-						<div class="step" data-lng="-92.1" data-lat="46.78" data-zoom="7">Duluth-Superior</div>
+						<div class="step" data-lng="-110.08" data-lat="39.58" data-zoom="3">Iron in the US</div>
+						<div class="step" data-lng="-91.5" data-lat="46.78" data-zoom="7">Duluth-Superior</div>
 						<div class="step" data-lng="-88.03" data-lat="46.32" data-zoom="6">Major Outbound Ports</div>
 						<div class="step" data-lng="-84.34" data-lat="46.25" data-zoom="7">Soo Locks</div>
 						<div class="step" data-lng="-86.95" data-lat="42.0" data-zoom="8">Indiana Harbor</div>
@@ -43,7 +43,11 @@
 
 					<figure id="map-container">
 						<div id="map"></div>
-						<!-- <div id="nonusa-mask-overlay"></div> -->
+						<div id="overlay-container">
+							<div id="map-text-overlay">MAP OVERLAY TEXT PLACEHOLDER</div>
+							<div id="map-chart-overlay">MAP OVERLAY CHART PLACEHOLDER</div>
+						</div>
+
 					</figure>
 				</section>
 			</div>
@@ -60,6 +64,38 @@
 				});
 
 				let routeData;
+
+				// Globals
+				let duluthGaryCoords = null;
+				const text_overlay_list = [
+					`
+					For years, seven open-pit mines in Minnesota and Michigan have accounted for 
+					<strong style="color:#C46F60;">effectively* 100%</strong> of domestic US iron ore production.
+
+					<span style="display:block; font-size:0.75em; color:#666; margin-top:0.6em;">
+						*Utah intermittently appears on U.S. Geological Survey's Mineral Commodity Summaries, with mining operations in the state being suspended as recently as 2025.
+					</span>
+					`,
+					`
+					Talk about Duluth-Superior
+					`,
+					`
+					Talk about outbound port for iron ore shipping
+					`,
+					`
+					Talk about Soo Locks
+					`,
+					`
+					Talk about Burns? IN Harbor? I forgot.
+					`,
+					`
+					Talk about inbound ports.
+					`,
+					`
+					SUMMARIZE ME
+					`
+				]
+				
 
 				// AI Use (ChatGPT): "Preferred approach for scrollytelling with scrollama and maplibre events?" 
 				// Using Scrollama to trigger maplibre flyto() events:
@@ -81,7 +117,8 @@
 					});
 
 					// Real Arthur M. Anderson route from Duluth to Gary in 2021
-					routeData = await (await fetch('../data/geodata/arthurmanderson_Duluth_to_Gary_Line_CLEAN.geojson')).json();
+					routeData = await (await fetch('data/geodata/arthurmanderson_Duluth_to_Gary_Line_CLEAN.geojson')).json();
+					duluthGaryCoords = routeData.features[0].geometry.coordinates;
 					map.addSource('Duluth_to_Gary', {
 						type: 'geojson',
 						data: { 
@@ -96,7 +133,8 @@
 						paint: { 'line-color': '#000000', 'line-width': 5 }
 					});
 
-					portData = await (await fetch('../data/geodata/USACE_port_and_stat_areas.geojson')).json();
+
+					portData = await (await fetch('data/geodata/USACE_port_and_stat_areas.geojson')).json();
 					map.addSource('USACE_Ports', {
 						type: 'geojson',
 						data: { 
@@ -127,7 +165,7 @@
 					map.getSource('USACE_Ports').setData(portData);
 
 					// Highlight Minnesota and Michigan
-					mnmiData = await (await fetch('../data/geodata/minnesota_michigan_borders.geojson')).json();
+					mnmiData = await (await fetch('data/geodata/minnesota_michigan_borders.geojson')).json();
 					map.addSource("mnmi", {
 						type: "geojson",
 						data:  {
@@ -150,7 +188,7 @@
 					map.getSource('mnmi').setData(mnmiData);
 
 					// Highlight USA, darken/fade out rest of world
-					usaData = await (await fetch('../data/geodata/us_lower_48.geojson')).json();
+					usaData = await (await fetch('data/geodata/us_lower_48.geojson')).json();
 					map.addSource("nonusa-mask", {
 						type: "geojson",
 						data:  {
@@ -181,7 +219,7 @@
 					});
 					
 
-					usacanData = await (await fetch('../data/geodata/usa_can_border.geojson')).json();
+					usacanData = await (await fetch('data/geodata/usa_can_border.geojson')).json();
 					map.addSource('usa_can_border',{
 						type: 'geojson',
 						data: usacanData
@@ -192,10 +230,14 @@
 						source: 'usa_can_border',
 						paint: {
 							'line-color': 'black',
-							'line-opacity': 0.65
+							'line-opacity': 0.0
 						}
 					})
 
+					map.setPaintProperty('nonusa-fade', 'fill-opacity-transition', { duration: 2500 });
+					map.setPaintProperty('mnmi-fill', 'fill-opacity-transition', { duration: 2500 });
+					map.setPaintProperty('USACE_Ports_fill', 'fill-opacity-transition', { duration: 2500 });
+					map.setPaintProperty('usa_can_border_line', 'line-opacity-transition', { duration: 2500 });
 
 					scroller
 						.setup({
@@ -211,44 +253,53 @@
 
 							// Scroll sections
 							const i = response.index;
-							map.setPaintProperty('nonusa-fade', 'fill-opacity-transition', { duration: 2500 });
-							map.setPaintProperty('mnmi-fill', 'fill-opacity-transition', { duration: 2500 });
-							map.setPaintProperty('USACE_Ports_fill', 'fill-opacity-transition', { duration: 2500 });
-
+							const text_overlay = document.getElementById('map-text-overlay');
+							text_overlay.innerHTML = text_overlay_list[i];
+							console.log(text_overlay_list[i]);
 							// Step 1: Full USA view, highlighting MN and MI, lowlight rest of world
 							if (i === 0) {
 								map.setPaintProperty('nonusa-fade', 'fill-opacity', 0.15);
 								map.setPaintProperty('mnmi-fill', 'fill-opacity', 0.65);
+								map.setPaintProperty('usa_can_border_line', 'line-opacity', 0.0);
 								map.setPaintProperty('USACE_Ports_fill', 'fill-opacity', 0.0)
 								map.setPaintProperty('USACE_Ports_line', 'line-opacity', 0.0)
+
+								text_overlay.classList.add('visible');
+
+								animateRoute('Duluth_to_Gary', duluthGaryCoords);
 							}
 							// Step 2: Duluth and USACE port zones
 							else if (i === 1) {
 								map.setPaintProperty('nonusa-fade', 'fill-opacity', 0.025);
 								map.setPaintProperty('mnmi-fill',   'fill-opacity', 0.1);
+								map.setPaintProperty('usa_can_border_line', 'line-opacity', 0.65);	
 								// map.setPaintProperty('mnmi-fill', 'fill-opacity', 0.65);
 								map.setPaintProperty('USACE_Ports_fill', 'fill-opacity', 0.5)
 								map.setPaintProperty('USACE_Ports_line', 'line-opacity', 0.5)
+
+								// document.getElementById('map-text-overlay').classList.remove('visible');
+								// console.log(text_overlay_list[i]);
+								// const animDuluthGary = animateRoute('Duluth_to_Gary', routeData.features[0].geometry.coordinates);
 							}
-							// Step 3: Outbound ports
+							// Step 3: Major Outbound ports
 							else if (i === 2) {
-								map.setPaintProperty('mnmi-fill', 'fill-opacity', 0.0);
+								
+								// map.setPaintProperty('mnmi-fill', 'fill-opacity', 0.0);
 							}
 							// Step 4: Soo Locks
 							else if (i === 3) {
-								map.setPaintProperty('mnmi-fill', 'fill-opacity', 0.0);
+								// map.setPaintProperty('mnmi-fill', 'fill-opacity', 0.0);
 							}
 							// Step 5: Inbound ports
 							else if (i === 4) {
-								map.setPaintProperty('mnmi-fill', 'fill-opacity', 0.0);
+								// map.setPaintProperty('mnmi-fill', 'fill-opacity', 0.0);
 							}
 							// Step 6: Summary
 							else if (i === 5) {
-								map.setPaintProperty('mnmi-fill', 'fill-opacity', 0.0);
+								// map.setPaintProperty('mnmi-fill', 'fill-opacity', 0.0);
 							}
 
-
-							// Map events
+							// Map zoom events
 							const lng = parseFloat(step.dataset.lng);
 							const lat = parseFloat(step.dataset.lat);
 							const zoom = parseFloat(step.dataset.zoom);
@@ -264,13 +315,13 @@
 							// exit events
 						});
 
-					const animDuluthGary = animateRoute('Duluth_to_Gary', routeData.features[0].geometry.coordinates);
+					
 
 				});
 
 				
-				function animateRoute(coords) {
-					const source = map.getSource('Duluth_to_Gary');
+				function animateRoute(sourceId, coords) {
+					const source = map.getSource(sourceId);
 					let i = 0;
 					function frame() {
 						if (i < coords.length) {
@@ -285,7 +336,7 @@
 					requestAnimationFrame(frame);
 				}
 
-				window.addEventListener("resize", scroller.resize);
+				window.addEventListener('resize', scroller.resize);
 
 
 			</script>

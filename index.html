@@ -56,7 +56,7 @@
 
 						// D3 CHART
 						async function load_cargo_data() {
-							const duluthCargo = await d3.csv('../data/clean/cargoes/outbound/duluth_superior.csv');
+							const duluthCargo = await d3.csv('data/clean/cargoes/outbound/duluth_superior.csv');
 							console.log(duluthCargo);
 							return duluthCargo;
 						}
@@ -108,7 +108,7 @@
 						);
 
 						// USACE PORT GEOGRAPHIES
-						portData = await (await fetch('../data/geodata/USACE_port_and_stat_areas.geojson')).json();
+						portData = await (await fetch('data/geodata/USACE_port_and_stat_areas.geojson')).json();
 						map.addSource('USACE_Ports', {
 							type: 'geojson',
 							data: { 
@@ -159,7 +159,7 @@
 						let counter = 0;
 						let routeData;
 						// This is an example voyage of an iron ore-carrying lake freighter
-						routeData = await (await fetch('../data/geodata/arthurmanderson_Duluth_to_Gary_Line_CLEAN.geojson')).json();
+						routeData = await (await fetch('data/geodata/arthurmanderson_Duluth_to_Gary_Line_CLEAN.geojson')).json();
 						const steps = routeData.features[0].geometry.coordinates.length - 1;
 						
 						// Calling animateRoute() now should draw on top of the USACE_Ports_fill Polygons

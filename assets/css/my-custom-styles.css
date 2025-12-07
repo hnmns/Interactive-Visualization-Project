@@ -16,6 +16,60 @@ overflow: visible !important;
   text-align: left;
 }
 
+#map-container {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  flex: 1;
+  align-self: flex-start;
+  margin: 0;
+  padding: 0;
+}
+
+#overlay-container {
+    position: absolute;
+    inset: 5vw;
+    display: flex;
+    flex-direction: column;
+    pointer-events: none;
+}
+
+#map-text-overlay {
+  top: 10%;
+  left: 5%;
+  max-width: 300px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0.5em 0.75em 1em rgba(109, 122, 151, 0.3); /*right-size bottom-size blur-size color*/
+  color: #000000;
+  padding: 1rem;
+  border-radius: 0px;
+  opacity: 0;
+  transition: opacity 1.0s ease-in-out;
+  pointer-events: none;
+  z-index: 10;
+}
+#map-text-overlay.visible {
+  opacity: 1;
+}
+
+#map-chart-overlay {
+  top: 10%;
+  left: 5%;
+  max-width: 300px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0.5em 0.75em 1em rgb(157, 176, 219, 0.3); /*right-size bottom-size blur-size color*/
+  color: #000000;
+  padding: 1rem;
+  border-radius: 0px;
+  opacity: 0;
+  transition: opacity 1.0s ease-in-out;
+  pointer-events: none;
+  z-index: 10;
+}
+#map-chart-overlay.visible {
+  opacity: 1;
+}
+
 .inner {
   position: static;
   top: auto;
@@ -45,20 +99,10 @@ overflow: visible !important;
 #sidebar {
   flex: 0 0 25rem;
   /* padding: 1rem; */
-  max-width: 28vw;
+  max-width: 15vw;
   overflow: visible;
   background: #ffffff51;
   text-align: left;
-}
-
-#map-container {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  flex: 1;
-  align-self: flex-start;
-  margin: 0;
-  padding: 0;
 }
 
 .step {
