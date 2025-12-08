@@ -9,7 +9,10 @@
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 		<script src='https://unpkg.com/maplibre-gl@5.13.0/dist/maplibre-gl.js'></script>
 		<script src="scrollama.js" type="text/javascript"></script>
-		<body class="is-preload">
+		<script src="https://d3js.org/d3.v7.min.js"></script>
+	</head>
+
+	<body class="is-preload">
 
 		<!-- Below, Story template item formatting that breaks the scroll-then-sticky map effect -->
 		<!-- <div id="wrapper" class="divided"> --> 
@@ -29,11 +32,13 @@
 				<section id="scrolly">
 					<article id="sidebar">
 						<div class="step" data-lng="-110.08" data-lat="39.58" data-zoom="3">Iron in the US</div>
-						<div class="step" data-lng="-91.5" data-lat="46.78" data-zoom="7">Duluth-Superior</div>
-						<div class="step" data-lng="-88.03" data-lat="46.32" data-zoom="6">Major Outbound Ports</div>
+						<div class="step" data-lng="-91.95" data-lat="46.78" data-zoom="7">Duluth-Superior</div>
+						<div class="step" data-lng="-88.03" data-lat="46.32" data-zoom="6">Major Outbound Ports - Cargo</div>
+						<div class="step" data-lng="-88.03" data-lat="46.62" data-zoom="6">Major Outbound Ports - Trips</div>
 						<div class="step" data-lng="-84.34" data-lat="46.25" data-zoom="7">Soo Locks</div>
-						<div class="step" data-lng="-86.95" data-lat="42.0" data-zoom="8">Indiana Harbor</div>
+						<div class="step" data-lng="-86.95" data-lat="41.85" data-zoom="8">Indiana Harbor</div>
 						<div class="step" data-lng="-84.75" data-lat="43.87" data-zoom="6">Major Inbound Ports</div>
+						<div class="step" data-lng="-87.25" data-lat="45.59" data-zoom="5.25">Iron on the Great Lakes</div>
 					</article>
 
 					<script
@@ -45,14 +50,16 @@
 						<div id="map"></div>
 						<div id="overlay-container">
 							<div id="map-text-overlay">MAP OVERLAY TEXT PLACEHOLDER</div>
-							<div id="map-chart-overlay">MAP OVERLAY CHART PLACEHOLDER</div>
+							<div id="map-chart-overlay">
+								CHART HERE
+							</div>
 						</div>
 
 					</figure>
 				</section>
 			</div>
 
-			<script>
+			<script type="module">
 				const map = new maplibregl.Map({
 					container: 'map',
 					style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
@@ -66,21 +73,27 @@
 				let routeData;
 
 				// Globals
-				let duluthGaryCoords = null;
+				// let duluthGaryCoords = null;
 				const text_overlay_list = [
 					`
 					For years, seven open-pit mines in Minnesota and Michigan have accounted for 
-					<strong style="color:#C46F60;">effectively* 100%</strong> of domestic US iron ore production.
-
+					<strong style="color:#C46F60;">effectively<sup>1</sup> 100%</strong> of US domestic iron ore production.
+					<br><br>
+					98% of this tonnage will go toward making steel.
+					<br><br>
 					<span style="display:block; font-size:0.75em; color:#666; margin-top:0.6em;">
-						*Utah intermittently appears on U.S. Geological Survey's Mineral Commodity Summaries, with mining operations in the state being suspended as recently as 2025.
+						<sup>1</sup>Utah intermittently appears on U.S. Geological Survey's Mineral Commodity Summaries, with mining operations in the state being suspended as recently as 2025.
 					</span>
 					`,
 					`
-					Talk about Duluth-Superior
+					How does the ore reach steel mills?
+					<br><br>
+					Rail moves <i>taconite</i> iron pellets overland to and from ports, and lake freighters as long as 1000 feet carry it over water.
+					<br><br>
+					The <strong>Port of Duluth-Superior</strong> is a major origin for these "laker" vessels, such as the 767-foot <i>Arthur M. Anderson</i>, whose July 2021 voyage to Gary, Indiana, is shown here.
 					`,
 					`
-					Talk about outbound port for iron ore shipping
+					Talk about outbound ports for iron ore shipping
 					`,
 					`
 					Talk about Soo Locks
@@ -93,17 +106,53 @@
 					`,
 					`
 					SUMMARIZE ME
+					<br><br>
+					Sth sth, energy efficiency and low emissions per ton-mile. OMG THE BOTTLENECK, THE AGING INFRASTRUCTURE.
 					`
 				]
 				
+				// Real Arthur M. Anderson route from Duluth to Gary in 2021
+				let duluthGaryCoords = [];
+				routeData = await (await fetch('data/geodata/arthurmanderson_Duluth_to_Gary_Line_CLEAN.geojson')).json();
+				duluthGaryCoords = routeData.features[0].geometry.coordinates;
+				let routeProgress = 0; // idx of current coordinate
+
+				// async function load_cargo_data() {
+				// 	const duluthCargo = await 
+				// 	console.log(duluthCargo);
+				// 	return duluthCargo;
+				// }
+
+				const duluthCargo = await d3.csv('data/clean/cargoes/outbound/duluth_superior.csv'); // load_cargo_data();
+				const dCargo = duluthCargo.map(d => {
+					return {
+					"WaterwayName":d.WaterwayName,
+					"CompletedYear":d.CompletedYear,
+					"ShortTons":+d.ShortTons
+					}
+				});
+				// console.log(dCargo);
+
+				const outportCargo = await d3.csv('data/clean/cargoes/wcus_outport_cargoes.csv'); // load_cargo_data();
+				const oCargo = outportCargo.map(d => {
+					return {
+					"WaterwayName":d.WaterwayName,
+					"CompletedYear":d.CompletedYear,
+					"ShortTons":+d.ShortTons
+					}
+				});
+				console.log(oCargo);
 
 				// AI Use (ChatGPT): "Preferred approach for scrollytelling with scrollama and maplibre events?" 
 				// Using Scrollama to trigger maplibre flyto() events:
 					// https://github.com/digidem/maplibre-storymap/tree/main
 				const scroller = scrollama();
 				map.on('load', async () => {
+					// Charts
+					// buildCargoChart(dCargo);
+					buildStackedCargoChart(oCargo);
 
-					// Prevent my layers from covering up basemap city names
+					// Prevent my layers from covering up basemap city names; bring city names up
 					map.on('styledata', () => {
 						const layers = map.getStyle().layers;
 
@@ -116,9 +165,27 @@
 						});
 					});
 
-					// Real Arthur M. Anderson route from Duluth to Gary in 2021
-					routeData = await (await fetch('data/geodata/arthurmanderson_Duluth_to_Gary_Line_CLEAN.geojson')).json();
-					duluthGaryCoords = routeData.features[0].geometry.coordinates;
+					const flyto_trigger_times = [
+						'moveend',
+						'moveend',
+						'moveend',
+						'moveend',
+						'move',
+						'move',
+						'move',
+						'move'
+					];
+					const routeCheckpoints = [
+						0,
+						duluthGaryCoords.length/4,
+						duluthGaryCoords.length/4,
+						duluthGaryCoords.length/4,
+						duluthGaryCoords.length/2-200,
+						duluthGaryCoords.length,
+						duluthGaryCoords.length,
+						duluthGaryCoords.length
+					].map(checkpt => Math.floor(checkpt));
+					
 					map.addSource('Duluth_to_Gary', {
 						type: 'geojson',
 						data: { 
@@ -130,11 +197,15 @@
 						id: 'Duluth_to_Gary',
 						type: 'line',
 						source: 'Duluth_to_Gary',
-						paint: { 'line-color': '#000000', 'line-width': 5 }
+						paint: { 
+							'line-color': '#000000', 
+							'line-width': 5,
+							'line-dasharray': [2,2]
+						}
 					});
 
 
-					portData = await (await fetch('data/geodata/USACE_port_and_stat_areas.geojson')).json();
+					const portData = await (await fetch('data/geodata/USACE_port_and_stat_areas.geojson')).json();
 					map.addSource('USACE_Ports', {
 						type: 'geojson',
 						data: { 
@@ -162,10 +233,29 @@
 							'line-dasharray': [2, 3]
 						}
 					});
+					map.addLayer({
+						id: 'USACE_Ports_Labels',
+						type: 'symbol',
+						source: 'USACE_Ports',
+						layout: {
+							'text-field': ['get', 'FEATURENAME'],
+							'text-size': 15,
+							'text-anchor': 'center',
+							'text-allow-overlap': false,
+							'text-offset': [-5, -1],
+							'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold']
+						},
+						paint: {
+							'text-color': '#222',
+							'text-halo-color': '#ffffff',
+							'text-halo-width': 1,
+							'text-opacity': 0.0,
+						}
+					});
 					map.getSource('USACE_Ports').setData(portData);
 
 					// Highlight Minnesota and Michigan
-					mnmiData = await (await fetch('data/geodata/minnesota_michigan_borders.geojson')).json();
+					const mnmiData = await (await fetch('data/geodata/minnesota_michigan_borders.geojson')).json();
 					map.addSource("mnmi", {
 						type: "geojson",
 						data:  {
@@ -188,7 +278,7 @@
 					map.getSource('mnmi').setData(mnmiData);
 
 					// Highlight USA, darken/fade out rest of world
-					usaData = await (await fetch('data/geodata/us_lower_48.geojson')).json();
+					const usaData = await (await fetch('data/geodata/us_lower_48.geojson')).json();
 					map.addSource("nonusa-mask", {
 						type: "geojson",
 						data:  {
@@ -219,7 +309,7 @@
 					});
 					
 
-					usacanData = await (await fetch('data/geodata/usa_can_border.geojson')).json();
+					const usacanData = await (await fetch('data/geodata/usa_can_border.geojson')).json();
 					map.addSource('usa_can_border',{
 						type: 'geojson',
 						data: usacanData
@@ -230,7 +320,8 @@
 						source: 'usa_can_border',
 						paint: {
 							'line-color': 'black',
-							'line-opacity': 0.0
+							'line-opacity': 0.0,
+							'line-width': 4
 						}
 					})
 
@@ -253,9 +344,30 @@
 
 							// Scroll sections
 							const i = response.index;
+
+							//// Map zoom events
+							const lng = parseFloat(step.dataset.lng);
+							const lat = parseFloat(step.dataset.lat);
+							const zoom = parseFloat(step.dataset.zoom);
+							map.flyTo({
+								center: [lng, lat],
+								zoom: zoom,
+								speed: 0.6,
+								curve: 1.43,
+								essential: true,
+							});
+
 							const text_overlay = document.getElementById('map-text-overlay');
 							text_overlay.innerHTML = text_overlay_list[i];
-							console.log(text_overlay_list[i]);
+							text_overlay.classList.add('visible');
+							// console.log(text_overlay_list[i]);
+							// const chart_overlay = document.getElementById('map-chart-overlay');
+							
+							// console.log(flyto_trigger_times[i])
+							map.on(flyto_trigger_times[i], () => {
+								animateRoute('Duluth_to_Gary', duluthGaryCoords, routeCheckpoints[i]);
+							})
+
 							// Step 1: Full USA view, highlighting MN and MI, lowlight rest of world
 							if (i === 0) {
 								map.setPaintProperty('nonusa-fade', 'fill-opacity', 0.15);
@@ -263,78 +375,304 @@
 								map.setPaintProperty('usa_can_border_line', 'line-opacity', 0.0);
 								map.setPaintProperty('USACE_Ports_fill', 'fill-opacity', 0.0)
 								map.setPaintProperty('USACE_Ports_line', 'line-opacity', 0.0)
+								map.setPaintProperty('USACE_Ports_Labels', 'text-opacity', 0.0)
 
-								text_overlay.classList.add('visible');
-
-								animateRoute('Duluth_to_Gary', duluthGaryCoords);
+								// text_overlay.classList.add('visible');
+								// map.once('moveend', () => {
+								// 	animateRoute('Duluth_to_Gary', duluthGaryCoords, routeCheckpoints[i]);
+								// })
+								document.getElementById("map-chart-overlay").classList.remove("visible");
 							}
 							// Step 2: Duluth and USACE port zones
 							else if (i === 1) {
 								map.setPaintProperty('nonusa-fade', 'fill-opacity', 0.025);
 								map.setPaintProperty('mnmi-fill',   'fill-opacity', 0.1);
-								map.setPaintProperty('usa_can_border_line', 'line-opacity', 0.65);	
+								map.setPaintProperty('usa_can_border_line', 'line-opacity', 0.35);	
 								// map.setPaintProperty('mnmi-fill', 'fill-opacity', 0.65);
 								map.setPaintProperty('USACE_Ports_fill', 'fill-opacity', 0.5)
 								map.setPaintProperty('USACE_Ports_line', 'line-opacity', 0.5)
+								map.setPaintProperty('USACE_Ports_Labels', 'text-opacity', 1.0)
 
-								// document.getElementById('map-text-overlay').classList.remove('visible');
-								// console.log(text_overlay_list[i]);
-								// const animDuluthGary = animateRoute('Duluth_to_Gary', routeData.features[0].geometry.coordinates);
+								// animateRoute('Duluth_to_Gary', duluthGaryCoords);
+								// map.once('moveend', () => {
+								// 	animateRoute('Duluth_to_Gary', duluthGaryCoords, routeCheckpoints[i]);
+								// })
+								
+								// chart_overlay.classList.add('visible');
+								document.getElementById("map-chart-overlay").classList.remove("visible");
 							}
-							// Step 3: Major Outbound ports
+							// Step 3: Major Outbound ports - Cargo
 							else if (i === 2) {
+								map.setPaintProperty('Duluth_to_Gary', 'line-opacity', 0.0)
 								
 								// map.setPaintProperty('mnmi-fill', 'fill-opacity', 0.0);
+								// map.once('moveend', () => {
+								// 	animateRoute('Duluth_to_Gary', duluthGaryCoords, routeCheckpoints[i]);
+								// })
+								
+								// text_overlay.classList.add('visible');
+								document.getElementById("map-chart-overlay").classList.add("visible");
 							}
-							// Step 4: Soo Locks
+							// Step 4: Major Outbound ports - Trips
 							else if (i === 3) {
+								map.setPaintProperty('Duluth_to_Gary', 'line-opacity', 0.0)
+								
 								// map.setPaintProperty('mnmi-fill', 'fill-opacity', 0.0);
+								// map.once('moveend', () => {
+								// 	animateRoute('Duluth_to_Gary', duluthGaryCoords, routeCheckpoints[i]);
+								// })
+								
+								// text_overlay.classList.add('visible');
+								document.getElementById("map-chart-overlay").classList.remove("visible");
 							}
-							// Step 5: Inbound ports
+							// Step 5: Soo Locks
 							else if (i === 4) {
+								map.setPaintProperty('Duluth_to_Gary', 'line-opacity', 1.0)
 								// map.setPaintProperty('mnmi-fill', 'fill-opacity', 0.0);
+								// map.once('moveend', () => {
+								// 	animateRoute('Duluth_to_Gary', duluthGaryCoords, stepNum=1);
+								// })
+								// map.once('moveend', () => {
+								// 	animateRoute('Duluth_to_Gary', duluthGaryCoords, routeCheckpoints[i]);
+								// })
 							}
-							// Step 6: Summary
+							// Step 6: Inbound ports
 							else if (i === 5) {
 								// map.setPaintProperty('mnmi-fill', 'fill-opacity', 0.0);
 							}
+							// Step 7: Summary
+							else if (i === 6) {
+								// map.setPaintProperty('mnmi-fill', 'fill-opacity', 0.0);
+								map.setLayoutProperty('USACE_Ports_Labels', 'text-size', 10)
+								
+							}
 
-							// Map zoom events
-							const lng = parseFloat(step.dataset.lng);
-							const lat = parseFloat(step.dataset.lat);
-							const zoom = parseFloat(step.dataset.zoom);
-							map.flyTo({
-								center: [lng, lat],
-								zoom: zoom,
-								speed: 0.4,
-								curve: 1.2,
-								essential: true,
-							});
+							
 						})
 						.onStepExit((response) => {
 							// exit events
+							document.getElementById("map-text-overlay").classList.remove("visible");
 						});
 
 					
 
 				});
 
-				
-				function animateRoute(sourceId, coords) {
+				function animateRoute(sourceId, coords, targetIndex, speed = 4) {
 					const source = map.getSource(sourceId);
-					let i = 0;
+					if (!source) return;
+
 					function frame() {
-						if (i < coords.length) {
-							i += 20;
+						if (routeProgress < targetIndex) {
+							routeProgress += speed;
+							if (routeProgress > targetIndex) {
+								routeProgress = targetIndex;
+							}
+
 							source.setData({
 								type: 'Feature',
-								geometry: { type: 'LineString', coordinates: coords.slice(0, i) }
+								geometry: {
+									type: 'LineString',
+									coordinates: coords.slice(0, routeProgress)
+								}
 							});
+
 							requestAnimationFrame(frame);
 						}
 					}
+
 					requestAnimationFrame(frame);
 				}
+				// function animateRoute(sourceId, coords, stepNum=0) {
+				// 	const source = map.getSource(sourceId);
+				// 	let i = 0;
+				// 	function frame() {
+				// 		// if (i < coords.length) {
+				// 		if (i < routeCheckpoints[stepNum]){
+				// 			i += 1; // Animation speed
+				// 			source.setData({
+				// 				type: 'Feature',
+				// 				geometry: { type: 'LineString', coordinates: coords.slice(0, i) }
+				// 			});
+				// 			requestAnimationFrame(frame);
+				// 		}
+				// 	}
+				// 	requestAnimationFrame(frame);
+				// }
+
+
+				function buildCargoChart(dataCargo){
+					// let width = 300;
+					// let height = 200;
+					let margin = 28;
+					let barwidth = 20;
+
+					// // Fixed SVG size
+					// let div_chart = d3
+					// 	.select("#map-chart-overlay")
+					// 	.append("svg")
+					// 	.attr("width", width)
+					// 	.attr("height", height)
+					// 	.attr("viewBox", "0 0 320 200")
+					// 	.style("background-color", "#ffffffcc");
+					// Fluid SVG size, fit to its container
+					let div_chart = d3
+						.select("#map-chart-overlay")
+						.append("svg")
+						.attr("viewBox", "0 0 320 200")
+						.style("width", "100%")
+						.style("height", "auto")
+						.style("background-color", "#ffffffcc");
+
+					// const xScale = d3.scaleBand(dataCargo.map(c => c.CompletedYear), [0,width]);
+					// let yScale = d3.scaleLinear(domain=[0,14944139], range=[height-margin, 0]);
+
+					const xScale = d3.scaleBand(
+						dataCargo.map(c => c.CompletedYear),
+						[0, width]
+					);
+
+					let yScale = d3.scaleLinear()
+						.domain([0, 14944139])
+						.range([height - margin, 0]);
+
+					div_chart.selectAll("rect")
+						.data(dataCargo)
+						.join("rect")
+							.attr("transform", `translate(${margin/2}, 0)`)
+							.attr("x", (d) => xScale(d.CompletedYear))
+							.attr("y", (d) => yScale(d.ShortTons))
+							.attr("height", (d) => yScale(0) - yScale(d.ShortTons))
+							.attr("width", barwidth)
+							.attr("fill", "black");
+
+					div_chart.append("g")
+						.attr("transform", `translate(${margin/2},${yScale(margin)})`)
+						.call(d3.axisBottom(xScale).ticks(3).tickSize(2))
+						.style("font-size", "8pt")
+						.call(g => g.append("text")
+							.attr("transform", `translate(${width/2-margin/2},${margin})`)
+							.text("Duluth Outbound Iron Ore Cargoes (short tons)")
+							.attr("fill", "black")
+							.style("font-size", "8pt")
+							// .style("font-size", "8pt")
+						);
+				}
+
+				// Stretch goal: Make this reactive
+				function buildStackedCargoChart(dataCargo){
+					// Ensure chart container is empty
+					d3.select("#map-chart-overlay").html("");
+
+					
+					let width = 400;
+					let height = 300;
+					let margin = 40;
+					// const margin = {'top':15, 'bottom':20, 'left':15, 'right':15}
+					let barwidth = 20;
+
+					// Fluid SVG size, fit to its container
+					let div_chart = d3
+						.select("#map-chart-overlay")
+						.append("svg")
+						.attr("viewBox", `${0} ${0} ${width+2*margin} ${height+2*margin}`)
+						.style("width", "100%")
+						.style("height", "auto")
+						.style("background-color", "#ffffff00");
+
+					// https://observablehq.com/@d3/stacked-bar-chart/2
+					const keys = Array.from(new Set(dataCargo.map(d => d.WaterwayName)));
+					// Reformat data to have entries like: {CompletedYear: {CompletedYear: [WaterwayName,CompletedYear,ShortTons]} }
+					const indexed = d3.index(
+						dataCargo,
+						d => d.CompletedYear,
+						d => d.WaterwayName
+					);
+					console.log(indexed);
+
+					const series = d3.stack()
+						.keys(keys)
+						.value(([, map], key) => map.get(key)?.ShortTons || 0)
+						(indexed);
+					// const series = d3.stack()
+					// 	.keys(d3.union(dataCargo.map(d => d.WaterwayName))) // distinct series keys, in input order
+					// 	.value(([, D], key) => D.get(key).ShortTons) // get value for each series key and stack
+					// 	(d3.index(dataCargo, d => d.CompletedYear, d => d.WaterwayName)); // group by stack then series key
+
+					const xScale = d3.scaleBand(
+						Array.from(indexed.keys()),
+						[0, width]
+					).padding(0.1);
+					// const xScale = d3.scaleBand(
+					// 	dataCargo.map(c => c.CompletedYear),
+					// 	[0, width]
+					// );
+
+					const yScale = d3.scaleLinear()
+						.domain([0, d3.max(series[series.length - 1], d => d[1])])
+						.nice()
+						.range([height, 0]);
+					// let yScale = d3.scaleLinear()
+					// 	.domain([0, 14944139])
+					// 	.range([height - margin, 0]);
+
+					const color = d3.scaleOrdinal()
+						.domain(keys)
+						.range(d3.schemeDark2);
+
+
+					div_chart.append("g")
+						.attr("transform", `translate(${margin},0)`)
+						.selectAll("g")
+						.data(series)
+						.join("g")
+							.attr("fill", d => color(d.key))
+						.selectAll("rect")
+						.data(d => d)
+						.join("rect")
+							.attr("x", d => xScale(d.data[0]))
+							.attr("y", d => yScale(d[1]))
+							.attr("height", d => yScale(d[0]) - yScale(d[1]))
+							.attr("width", xScale.bandwidth());
+					// div_chart.selectAll("rect")
+					// 	.data(dataCargo)
+					// 	.join("rect")
+					// 		.attr("transform", `translate(${margin/2}, 0)`)
+					// 		.attr("x", (d) => xScale(d.CompletedYear))
+					// 		.attr("y", (d) => yScale(d.ShortTons))
+					// 		.attr("height", (d) => yScale(0) - yScale(d.ShortTons))
+					// 		.attr("width", barwidth)
+					// 		.attr("fill", "black");
+
+					// x Axis
+					div_chart.append("g")
+					.attr("transform", `translate(${margin},${yScale(margin)})`)
+					.call(d3.axisBottom(xScale).tickSize(3))
+					.style("font-size", "10pt")
+					.call(g => g.append("text")
+						.attr("transform", `translate(${width/2},${margin})`)
+						.text("Outbound Iron Ore Cargoes from USACE Ports")
+						.attr("fill", "black")
+						.style("font-size", "12pt")
+						// .style("font-size", "8pt")
+					);
+
+					// y Axis
+					div_chart.append("g")
+						.attr("transform", `translate(${margin},${0})`)
+						.call(d3.axisLeft(yScale)
+							.tickSize(3)
+							.tickFormat(d3.format(".2s")))
+						.style("font-size", "10pt")
+						.call(g => g.append("text")
+							.attr("transform", `translate(${-margin},${0})rotate(-90)`)
+							.text("Tonnage (short tons)")
+							.attr("fill", "black")
+							.style("font-size", "12pt")
+							// .style("font-size", "8pt")
+						);
+				}
+				
 
 				window.addEventListener('resize', scroller.resize);
 
