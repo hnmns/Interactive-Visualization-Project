@@ -19,63 +19,43 @@
 17,3841,"Marquette, MI",Outbound Shipping,2021,155
 18,3841,"Marquette, MI",Outbound Shipping,2022,124
 19,3841,"Marquette, MI",Outbound Shipping,2023,160
-20,3845,"Presque Isle, MI",Inbound Receiving,2014,153
-21,3845,"Presque Isle, MI",Inbound Receiving,2015,125
-22,3845,"Presque Isle, MI",Inbound Receiving,2016,173
-23,3845,"Presque Isle, MI",Inbound Receiving,2017,132
-24,3845,"Presque Isle, MI",Inbound Receiving,2018,111
-25,3845,"Presque Isle, MI",Inbound Receiving,2019,93
-26,3845,"Presque Isle, MI",Inbound Receiving,2020,72
-27,3845,"Presque Isle, MI",Inbound Receiving,2021,101
-28,3845,"Presque Isle, MI",Inbound Receiving,2022,87
-29,3845,"Presque Isle, MI",Inbound Receiving,2023,122
-30,3845,"Presque Isle, MI",Outbound Shipping,2014,155
-31,3845,"Presque Isle, MI",Outbound Shipping,2015,132
-32,3845,"Presque Isle, MI",Outbound Shipping,2016,187
-33,3845,"Presque Isle, MI",Outbound Shipping,2017,146
-34,3845,"Presque Isle, MI",Outbound Shipping,2018,131
-35,3845,"Presque Isle, MI",Outbound Shipping,2019,112
-36,3845,"Presque Isle, MI",Outbound Shipping,2020,81
-37,3845,"Presque Isle, MI",Outbound Shipping,2021,128
-38,3845,"Presque Isle, MI",Outbound Shipping,2022,112
-39,3845,"Presque Isle, MI",Outbound Shipping,2023,142
-40,3924,"Duluth-Superior, MN and WI",Inbound Receiving,2014,477
-41,3924,"Duluth-Superior, MN and WI",Inbound Receiving,2015,426
-42,3924,"Duluth-Superior, MN and WI",Inbound Receiving,2016,379
-43,3924,"Duluth-Superior, MN and WI",Inbound Receiving,2017,418
-44,3924,"Duluth-Superior, MN and WI",Inbound Receiving,2018,423
-45,3924,"Duluth-Superior, MN and WI",Inbound Receiving,2019,416
-46,3924,"Duluth-Superior, MN and WI",Inbound Receiving,2020,291
-47,3924,"Duluth-Superior, MN and WI",Inbound Receiving,2021,301
-48,3924,"Duluth-Superior, MN and WI",Inbound Receiving,2022,288
-49,3924,"Duluth-Superior, MN and WI",Inbound Receiving,2023,302
-50,3924,"Duluth-Superior, MN and WI",Outbound Shipping,2014,519
-51,3924,"Duluth-Superior, MN and WI",Outbound Shipping,2015,486
-52,3924,"Duluth-Superior, MN and WI",Outbound Shipping,2016,395
-53,3924,"Duluth-Superior, MN and WI",Outbound Shipping,2017,447
-54,3924,"Duluth-Superior, MN and WI",Outbound Shipping,2018,448
-55,3924,"Duluth-Superior, MN and WI",Outbound Shipping,2019,456
-56,3924,"Duluth-Superior, MN and WI",Outbound Shipping,2020,338
-57,3924,"Duluth-Superior, MN and WI",Outbound Shipping,2021,438
-58,3924,"Duluth-Superior, MN and WI",Outbound Shipping,2022,398
-59,3924,"Duluth-Superior, MN and WI",Outbound Shipping,2023,400
-60,3926,"Two Harbors, MN",Inbound Receiving,2014,217
-61,3926,"Two Harbors, MN",Inbound Receiving,2015,215
-62,3926,"Two Harbors, MN",Inbound Receiving,2016,214
-63,3926,"Two Harbors, MN",Inbound Receiving,2017,217
-64,3926,"Two Harbors, MN",Inbound Receiving,2018,184
-65,3926,"Two Harbors, MN",Inbound Receiving,2019,179
-66,3926,"Two Harbors, MN",Inbound Receiving,2020,171
-67,3926,"Two Harbors, MN",Inbound Receiving,2021,116
-68,3926,"Two Harbors, MN",Inbound Receiving,2022,104
-69,3926,"Two Harbors, MN",Inbound Receiving,2023,134
-70,3926,"Two Harbors, MN",Outbound Shipping,2014,230
-71,3926,"Two Harbors, MN",Outbound Shipping,2015,232
-72,3926,"Two Harbors, MN",Outbound Shipping,2016,223
-73,3926,"Two Harbors, MN",Outbound Shipping,2017,230
-74,3926,"Two Harbors, MN",Outbound Shipping,2018,198
-75,3926,"Two Harbors, MN",Outbound Shipping,2019,193
-76,3926,"Two Harbors, MN",Outbound Shipping,2020,180
-77,3926,"Two Harbors, MN",Outbound Shipping,2021,172
-78,3926,"Two Harbors, MN",Outbound Shipping,2022,157
-79,3926,"Two Harbors, MN",Outbound Shipping,2023,179
+20,3924,"Duluth-Superior, MN and WI",Inbound Receiving,2014,477
+21,3924,"Duluth-Superior, MN and WI",Inbound Receiving,2015,426
+22,3924,"Duluth-Superior, MN and WI",Inbound Receiving,2016,379
+23,3924,"Duluth-Superior, MN and WI",Inbound Receiving,2017,418
+24,3924,"Duluth-Superior, MN and WI",Inbound Receiving,2018,423
+25,3924,"Duluth-Superior, MN and WI",Inbound Receiving,2019,416
+26,3924,"Duluth-Superior, MN and WI",Inbound Receiving,2020,291
+27,3924,"Duluth-Superior, MN and WI",Inbound Receiving,2021,301
+28,3924,"Duluth-Superior, MN and WI",Inbound Receiving,2022,288
+29,3924,"Duluth-Superior, MN and WI",Inbound Receiving,2023,302
+30,3924,"Duluth-Superior, MN and WI",Outbound Shipping,2014,519
+31,3924,"Duluth-Superior, MN and WI",Outbound Shipping,2015,486
+32,3924,"Duluth-Superior, MN and WI",Outbound Shipping,2016,395
+33,3924,"Duluth-Superior, MN and WI",Outbound Shipping,2017,447
+34,3924,"Duluth-Superior, MN and WI",Outbound Shipping,2018,448
+35,3924,"Duluth-Superior, MN and WI",Outbound Shipping,2019,456
+36,3924,"Duluth-Superior, MN and WI",Outbound Shipping,2020,338
+37,3924,"Duluth-Superior, MN and WI",Outbound Shipping,2021,438
+38,3924,"Duluth-Superior, MN and WI",Outbound Shipping,2022,398
+39,3924,"Duluth-Superior, MN and WI",Outbound Shipping,2023,400
+40,3926,"Two Harbors, MN",Inbound Receiving,2014,217
+41,3926,"Two Harbors, MN",Inbound Receiving,2015,215
+42,3926,"Two Harbors, MN",Inbound Receiving,2016,214
+43,3926,"Two Harbors, MN",Inbound Receiving,2017,217
+44,3926,"Two Harbors, MN",Inbound Receiving,2018,184
+45,3926,"Two Harbors, MN",Inbound Receiving,2019,179
+46,3926,"Two Harbors, MN",Inbound Receiving,2020,171
+47,3926,"Two Harbors, MN",Inbound Receiving,2021,116
+48,3926,"Two Harbors, MN",Inbound Receiving,2022,104
+49,3926,"Two Harbors, MN",Inbound Receiving,2023,134
+50,3926,"Two Harbors, MN",Outbound Shipping,2014,230
+51,3926,"Two Harbors, MN",Outbound Shipping,2015,232
+52,3926,"Two Harbors, MN",Outbound Shipping,2016,223
+53,3926,"Two Harbors, MN",Outbound Shipping,2017,230
+54,3926,"Two Harbors, MN",Outbound Shipping,2018,198
+55,3926,"Two Harbors, MN",Outbound Shipping,2019,193
+56,3926,"Two Harbors, MN",Outbound Shipping,2020,180
+57,3926,"Two Harbors, MN",Outbound Shipping,2021,172
+58,3926,"Two Harbors, MN",Outbound Shipping,2022,157
+59,3926,"Two Harbors, MN",Outbound Shipping,2023,179

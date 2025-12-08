@@ -1,0 +1,159 @@
+WaterwayCode,WaterwayName,In/Out/Thru,CompletedYear,Trips
+3204,"Toledo-Lucas County Port, OH",Inbound Receiving,2014,63
+3204,"Toledo-Lucas County Port, OH",Inbound Receiving,2015,32
+3204,"Toledo-Lucas County Port, OH",Inbound Receiving,2016,21
+3204,"Toledo-Lucas County Port, OH",Inbound Receiving,2017,45
+3204,"Toledo-Lucas County Port, OH",Inbound Receiving,2018,21
+3204,"Toledo-Lucas County Port, OH",Inbound Receiving,2019,33
+3204,"Toledo-Lucas County Port, OH",Inbound Receiving,2020,21
+3204,"Toledo-Lucas County Port, OH",Inbound Receiving,2021,51
+3204,"Toledo-Lucas County Port, OH",Inbound Receiving,2022,44
+3204,"Toledo-Lucas County Port, OH",Inbound Receiving,2023,23
+3204,"Toledo-Lucas County Port, OH",Outbound Shipping,2014,1
+3204,"Toledo-Lucas County Port, OH",Outbound Shipping,2015,1
+3204,"Toledo-Lucas County Port, OH",Outbound Shipping,2016,1
+3204,"Toledo-Lucas County Port, OH",Outbound Shipping,2017,6
+3204,"Toledo-Lucas County Port, OH",Outbound Shipping,2018,4
+3204,"Toledo-Lucas County Port, OH",Outbound Shipping,2019,1
+3204,"Toledo-Lucas County Port, OH",Outbound Shipping,2021,5
+3204,"Toledo-Lucas County Port, OH",Outbound Shipping,2022,18
+3204,"Toledo-Lucas County Port, OH",Outbound Shipping,2023,24
+3217,"Cleveland-Cuyahoga Port, OH",Inbound Receiving,2014,112
+3217,"Cleveland-Cuyahoga Port, OH",Inbound Receiving,2015,122
+3217,"Cleveland-Cuyahoga Port, OH",Inbound Receiving,2016,142
+3217,"Cleveland-Cuyahoga Port, OH",Inbound Receiving,2017,84
+3217,"Cleveland-Cuyahoga Port, OH",Inbound Receiving,2018,89
+3217,"Cleveland-Cuyahoga Port, OH",Inbound Receiving,2019,73
+3217,"Cleveland-Cuyahoga Port, OH",Inbound Receiving,2020,65
+3217,"Cleveland-Cuyahoga Port, OH",Inbound Receiving,2021,121
+3217,"Cleveland-Cuyahoga Port, OH",Inbound Receiving,2022,108
+3217,"Cleveland-Cuyahoga Port, OH",Inbound Receiving,2023,133
+3217,"Cleveland-Cuyahoga Port, OH",Outbound Shipping,2014,9
+3217,"Cleveland-Cuyahoga Port, OH",Outbound Shipping,2015,21
+3217,"Cleveland-Cuyahoga Port, OH",Outbound Shipping,2016,29
+3217,"Cleveland-Cuyahoga Port, OH",Outbound Shipping,2017,19
+3217,"Cleveland-Cuyahoga Port, OH",Outbound Shipping,2018,5
+3217,"Cleveland-Cuyahoga Port, OH",Outbound Shipping,2019,5
+3217,"Cleveland-Cuyahoga Port, OH",Outbound Shipping,2020,3
+3217,"Cleveland-Cuyahoga Port, OH",Outbound Shipping,2021,39
+3217,"Cleveland-Cuyahoga Port, OH",Outbound Shipping,2022,56
+3217,"Cleveland-Cuyahoga Port, OH",Outbound Shipping,2023,92
+3219,"Ashtabula Port Authority, OH",Inbound Receiving,2014,37
+3219,"Ashtabula Port Authority, OH",Inbound Receiving,2015,30
+3219,"Ashtabula Port Authority, OH",Inbound Receiving,2016,31
+3219,"Ashtabula Port Authority, OH",Inbound Receiving,2017,58
+3219,"Ashtabula Port Authority, OH",Inbound Receiving,2018,52
+3219,"Ashtabula Port Authority, OH",Inbound Receiving,2019,67
+3219,"Ashtabula Port Authority, OH",Inbound Receiving,2020,35
+3219,"Ashtabula Port Authority, OH",Inbound Receiving,2021,20
+3219,"Ashtabula Port Authority, OH",Inbound Receiving,2022,11
+3219,"Ashtabula Port Authority, OH",Inbound Receiving,2023,6
+3219,"Ashtabula Port Authority, OH",Outbound Shipping,2014,3
+3219,"Ashtabula Port Authority, OH",Outbound Shipping,2015,2
+3219,"Ashtabula Port Authority, OH",Outbound Shipping,2016,1
+3219,"Ashtabula Port Authority, OH",Outbound Shipping,2017,3
+3219,"Ashtabula Port Authority, OH",Outbound Shipping,2018,8
+3219,"Ashtabula Port Authority, OH",Outbound Shipping,2019,2
+3219,"Ashtabula Port Authority, OH",Outbound Shipping,2020,12
+3219,"Ashtabula Port Authority, OH",Outbound Shipping,2021,3
+3219,"Ashtabula Port Authority, OH",Outbound Shipping,2022,1
+3220,"Conneaut Harbor, OH",Inbound Receiving,2014,63
+3220,"Conneaut Harbor, OH",Inbound Receiving,2015,58
+3220,"Conneaut Harbor, OH",Inbound Receiving,2016,57
+3220,"Conneaut Harbor, OH",Inbound Receiving,2017,56
+3220,"Conneaut Harbor, OH",Inbound Receiving,2018,47
+3220,"Conneaut Harbor, OH",Inbound Receiving,2019,51
+3220,"Conneaut Harbor, OH",Inbound Receiving,2020,70
+3220,"Conneaut Harbor, OH",Inbound Receiving,2021,67
+3220,"Conneaut Harbor, OH",Inbound Receiving,2022,42
+3220,"Conneaut Harbor, OH",Inbound Receiving,2023,51
+3220,"Conneaut Harbor, OH",Outbound Shipping,2014,7
+3220,"Conneaut Harbor, OH",Outbound Shipping,2015,6
+3220,"Conneaut Harbor, OH",Outbound Shipping,2016,12
+3220,"Conneaut Harbor, OH",Outbound Shipping,2017,11
+3220,"Conneaut Harbor, OH",Outbound Shipping,2018,9
+3220,"Conneaut Harbor, OH",Outbound Shipping,2019,3
+3220,"Conneaut Harbor, OH",Outbound Shipping,2020,15
+3220,"Conneaut Harbor, OH",Outbound Shipping,2021,3
+3220,"Conneaut Harbor, OH",Outbound Shipping,2022,2
+3220,"Conneaut Harbor, OH",Outbound Shipping,2023,3
+3315,"Rouge River, MI",Inbound Receiving,2014,139
+3315,"Rouge River, MI",Inbound Receiving,2015,141
+3315,"Rouge River, MI",Inbound Receiving,2016,142
+3315,"Rouge River, MI",Inbound Receiving,2017,123
+3315,"Rouge River, MI",Inbound Receiving,2018,145
+3315,"Rouge River, MI",Inbound Receiving,2019,111
+3315,"Rouge River, MI",Inbound Receiving,2020,111
+3315,"Rouge River, MI",Inbound Receiving,2021,131
+3315,"Rouge River, MI",Inbound Receiving,2022,87
+3315,"Rouge River, MI",Inbound Receiving,2023,12
+3315,"Rouge River, MI",Outbound Shipping,2014,19
+3315,"Rouge River, MI",Outbound Shipping,2015,20
+3315,"Rouge River, MI",Outbound Shipping,2016,14
+3315,"Rouge River, MI",Outbound Shipping,2017,16
+3315,"Rouge River, MI",Outbound Shipping,2018,22
+3315,"Rouge River, MI",Outbound Shipping,2019,9
+3315,"Rouge River, MI",Outbound Shipping,2020,11
+3315,"Rouge River, MI",Outbound Shipping,2021,4
+3315,"Rouge River, MI",Outbound Shipping,2022,29
+3315,"Rouge River, MI",Outbound Shipping,2023,43
+3736,"Gary, IN",Inbound Receiving,2014,186
+3736,"Gary, IN",Inbound Receiving,2015,150
+3736,"Gary, IN",Inbound Receiving,2016,151
+3736,"Gary, IN",Inbound Receiving,2017,165
+3736,"Gary, IN",Inbound Receiving,2018,183
+3736,"Gary, IN",Inbound Receiving,2019,163
+3736,"Gary, IN",Inbound Receiving,2020,148
+3736,"Gary, IN",Inbound Receiving,2021,149
+3736,"Gary, IN",Inbound Receiving,2022,169
+3736,"Gary, IN",Inbound Receiving,2023,155
+3736,"Gary, IN",Outbound Shipping,2014,30
+3736,"Gary, IN",Outbound Shipping,2015,26
+3736,"Gary, IN",Outbound Shipping,2016,47
+3736,"Gary, IN",Outbound Shipping,2017,40
+3736,"Gary, IN",Outbound Shipping,2018,30
+3736,"Gary, IN",Outbound Shipping,2019,13
+3736,"Gary, IN",Outbound Shipping,2020,10
+3736,"Gary, IN",Outbound Shipping,2021,5
+3736,"Gary, IN",Outbound Shipping,2022,7
+3736,"Gary, IN",Outbound Shipping,2023,8
+3738,"Indiana Harbor, IN",Inbound Receiving,2014,237
+3738,"Indiana Harbor, IN",Inbound Receiving,2015,212
+3738,"Indiana Harbor, IN",Inbound Receiving,2016,194
+3738,"Indiana Harbor, IN",Inbound Receiving,2017,173
+3738,"Indiana Harbor, IN",Inbound Receiving,2018,159
+3738,"Indiana Harbor, IN",Inbound Receiving,2019,166
+3738,"Indiana Harbor, IN",Inbound Receiving,2020,117
+3738,"Indiana Harbor, IN",Inbound Receiving,2021,155
+3738,"Indiana Harbor, IN",Inbound Receiving,2022,123
+3738,"Indiana Harbor, IN",Inbound Receiving,2023,90
+3738,"Indiana Harbor, IN",Outbound Shipping,2014,31
+3738,"Indiana Harbor, IN",Outbound Shipping,2015,29
+3738,"Indiana Harbor, IN",Outbound Shipping,2016,42
+3738,"Indiana Harbor, IN",Outbound Shipping,2017,23
+3738,"Indiana Harbor, IN",Outbound Shipping,2018,28
+3738,"Indiana Harbor, IN",Outbound Shipping,2019,45
+3738,"Indiana Harbor, IN",Outbound Shipping,2020,21
+3738,"Indiana Harbor, IN",Outbound Shipping,2021,60
+3738,"Indiana Harbor, IN",Outbound Shipping,2022,61
+3738,"Indiana Harbor, IN",Outbound Shipping,2023,49
+3739,"Burns Waterway Harbor, IN",Inbound Receiving,2014,124
+3739,"Burns Waterway Harbor, IN",Inbound Receiving,2015,113
+3739,"Burns Waterway Harbor, IN",Inbound Receiving,2016,109
+3739,"Burns Waterway Harbor, IN",Inbound Receiving,2017,120
+3739,"Burns Waterway Harbor, IN",Inbound Receiving,2018,119
+3739,"Burns Waterway Harbor, IN",Inbound Receiving,2019,128
+3739,"Burns Waterway Harbor, IN",Inbound Receiving,2020,91
+3739,"Burns Waterway Harbor, IN",Inbound Receiving,2021,138
+3739,"Burns Waterway Harbor, IN",Inbound Receiving,2022,95
+3739,"Burns Waterway Harbor, IN",Inbound Receiving,2023,64
+3739,"Burns Waterway Harbor, IN",Outbound Shipping,2014,14
+3739,"Burns Waterway Harbor, IN",Outbound Shipping,2015,7
+3739,"Burns Waterway Harbor, IN",Outbound Shipping,2016,8
+3739,"Burns Waterway Harbor, IN",Outbound Shipping,2017,10
+3739,"Burns Waterway Harbor, IN",Outbound Shipping,2018,10
+3739,"Burns Waterway Harbor, IN",Outbound Shipping,2019,18
+3739,"Burns Waterway Harbor, IN",Outbound Shipping,2020,6
+3739,"Burns Waterway Harbor, IN",Outbound Shipping,2021,30
+3739,"Burns Waterway Harbor, IN",Outbound Shipping,2022,35
+3739,"Burns Waterway Harbor, IN",Outbound Shipping,2023,40

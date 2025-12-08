@@ -1,0 +1,61 @@
+WaterwayCode,WaterwayName,In/Out/Thru,CompletedYear,Trips
+3841,"Marquette, MI",Inbound Receiving,2014,24
+3841,"Marquette, MI",Inbound Receiving,2015,24
+3841,"Marquette, MI",Inbound Receiving,2016,35
+3841,"Marquette, MI",Inbound Receiving,2017,28
+3841,"Marquette, MI",Inbound Receiving,2018,27
+3841,"Marquette, MI",Inbound Receiving,2019,14
+3841,"Marquette, MI",Inbound Receiving,2020,10
+3841,"Marquette, MI",Inbound Receiving,2021,14
+3841,"Marquette, MI",Inbound Receiving,2022,12
+3841,"Marquette, MI",Inbound Receiving,2023,48
+3841,"Marquette, MI",Outbound Shipping,2014,135
+3841,"Marquette, MI",Outbound Shipping,2015,111
+3841,"Marquette, MI",Outbound Shipping,2016,155
+3841,"Marquette, MI",Outbound Shipping,2017,130
+3841,"Marquette, MI",Outbound Shipping,2018,125
+3841,"Marquette, MI",Outbound Shipping,2019,111
+3841,"Marquette, MI",Outbound Shipping,2020,80
+3841,"Marquette, MI",Outbound Shipping,2021,147
+3841,"Marquette, MI",Outbound Shipping,2022,112
+3841,"Marquette, MI",Outbound Shipping,2023,148
+3924,"Duluth-Superior, MN and WI",Inbound Receiving,2014,96
+3924,"Duluth-Superior, MN and WI",Inbound Receiving,2015,75
+3924,"Duluth-Superior, MN and WI",Inbound Receiving,2016,80
+3924,"Duluth-Superior, MN and WI",Inbound Receiving,2017,61
+3924,"Duluth-Superior, MN and WI",Inbound Receiving,2018,77
+3924,"Duluth-Superior, MN and WI",Inbound Receiving,2019,96
+3924,"Duluth-Superior, MN and WI",Inbound Receiving,2020,69
+3924,"Duluth-Superior, MN and WI",Inbound Receiving,2021,81
+3924,"Duluth-Superior, MN and WI",Inbound Receiving,2022,81
+3924,"Duluth-Superior, MN and WI",Inbound Receiving,2023,114
+3924,"Duluth-Superior, MN and WI",Outbound Shipping,2014,400
+3924,"Duluth-Superior, MN and WI",Outbound Shipping,2015,359
+3924,"Duluth-Superior, MN and WI",Outbound Shipping,2016,294
+3924,"Duluth-Superior, MN and WI",Outbound Shipping,2017,334
+3924,"Duluth-Superior, MN and WI",Outbound Shipping,2018,346
+3924,"Duluth-Superior, MN and WI",Outbound Shipping,2019,346
+3924,"Duluth-Superior, MN and WI",Outbound Shipping,2020,246
+3924,"Duluth-Superior, MN and WI",Outbound Shipping,2021,369
+3924,"Duluth-Superior, MN and WI",Outbound Shipping,2022,329
+3924,"Duluth-Superior, MN and WI",Outbound Shipping,2023,319
+3926,"Two Harbors, MN",Inbound Receiving,2014,27
+3926,"Two Harbors, MN",Inbound Receiving,2015,25
+3926,"Two Harbors, MN",Inbound Receiving,2016,64
+3926,"Two Harbors, MN",Inbound Receiving,2017,46
+3926,"Two Harbors, MN",Inbound Receiving,2018,28
+3926,"Two Harbors, MN",Inbound Receiving,2019,15
+3926,"Two Harbors, MN",Inbound Receiving,2020,18
+3926,"Two Harbors, MN",Inbound Receiving,2021,19
+3926,"Two Harbors, MN",Inbound Receiving,2022,5
+3926,"Two Harbors, MN",Inbound Receiving,2023,11
+3926,"Two Harbors, MN",Outbound Shipping,2014,216
+3926,"Two Harbors, MN",Outbound Shipping,2015,225
+3926,"Two Harbors, MN",Outbound Shipping,2016,219
+3926,"Two Harbors, MN",Outbound Shipping,2017,218
+3926,"Two Harbors, MN",Outbound Shipping,2018,193
+3926,"Two Harbors, MN",Outbound Shipping,2019,186
+3926,"Two Harbors, MN",Outbound Shipping,2020,174
+3926,"Two Harbors, MN",Outbound Shipping,2021,171
+3926,"Two Harbors, MN",Outbound Shipping,2022,151
+3926,"Two Harbors, MN",Outbound Shipping,2023,176

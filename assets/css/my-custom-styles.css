@@ -56,13 +56,32 @@ overflow: visible !important;
 #map-text-overlay.visible {
   opacity: 1;
 }
+#map-text-overlay.top-left {
+  top: 10% !important;
+  left: 5% !important;
+  bottom: auto !important;
+  right: auto !important;
+}
+#map-text-overlay.bottom-left {
+  top: auto !important;
+  left: 5% !important;
+  bottom: 20% !important;
+  right: auto !important;
+}
+#map-text-overlay.bottom-middle {
+  top: auto !important;
+  left: 40% !important;
+  bottom: 10% !important;
+  right: auto !important;
+}
 
 #map-chart-overlay {
   position: absolute;
-  bottom: 10%;
-  right: 40%;
-  min-width: 30vw;
-  max-width: 35vw;
+  top: 50%;
+  right: 50%;
+  transform: translate(50%, -50%); /*Center the overlay using top and right wrt to its center!*/
+  min-width: 32vw;
+  max-width: 40vw;
   background: rgba(255, 255, 255, 0.9);
   box-shadow: 0.5em 0.75em 1em rgb(157, 176, 219, 0.3); /*right-size bottom-size blur-size color*/
   color: #000000;
@@ -75,6 +94,50 @@ overflow: visible !important;
   z-index: 10;
 }
 #map-chart-overlay.visible {
+  opacity: 1;
+}
+
+#pictograph {
+  position: absolute;
+  top: 50%;
+  right: 20%;
+  transform: translate(50%, -50%); /*Center the overlay using top and right wrt to its center!*/
+  min-width: 32vw;
+  max-width: 40vw;
+  /* background: rgba(255, 255, 255, 0.9); */
+  /* box-shadow: 0.5em 0.75em 1em rgb(157, 176, 219, 0.3); right-size bottom-size blur-size color */
+  color: #000000;
+  margin: 0.1rem;
+  padding: 1rem;
+  border-radius: 0px;
+  opacity: 0;
+  transition: opacity 1.0s ease-in-out;
+  pointer-events: none;
+  z-index: 10;
+}
+#pictograph.visible {
+  opacity: 1;
+}
+
+#pictograph-locks {
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  transform: translate(50%, -50%); /*Center the overlay using top and right wrt to its center!*/
+  /* min-width: 32vw;
+  max-width: 40vw; */
+  /* background: rgba(255, 255, 255, 0.9); */
+  /* box-shadow: 0.5em 0.75em 1em rgb(157, 176, 219, 0.3); right-size bottom-size blur-size color */
+  color: #000000;
+  margin: 0.1rem;
+  padding: 1rem;
+  border-radius: 0px;
+  opacity: 0;
+  transition: opacity 1.0s ease-in-out;
+  pointer-events: none;
+  z-index: 10;
+}
+#pictograph-locks.visible {
   opacity: 1;
 }
 
