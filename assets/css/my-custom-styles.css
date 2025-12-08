@@ -93,7 +93,7 @@ overflow: visible !important;
 #map-text-overlay.bottom-left {
   top: auto !important;
   left: 2.5% !important;
-  bottom: 10% !important;
+  bottom: 5% !important;
   right: auto !important;
 }
 #map-text-overlay.bottom-middle {
@@ -105,7 +105,7 @@ overflow: visible !important;
 
 #map-chart-overlay {
   position: absolute;
-  top: 50%;
+  top: 35%;
   right: 50%;
   transform: translate(50%, -50%); /*Center the overlay using top and right wrt to its center!*/
   min-width: 32vw;

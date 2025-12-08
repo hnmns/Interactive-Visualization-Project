@@ -38,8 +38,8 @@
 						<div class="step" data-lng="-88.03" data-lat="46.02" data-zoom="6">Major Outbound Ports - Route</div>
 						<div class="step" data-lng="-84.94" data-lat="46.15" data-zoom="6.5">Soo Locks</div>
 						<div class="step" data-lng="-86.95" data-lat="41.85" data-zoom="8">Indiana Destinations</div>
-						<div class="step" data-lng="-84.45" data-lat="42.37" data-zoom="6.8">Major Inbound Ports</div>
-						<div class="step" data-lng="-87.25" data-lat="45.59" data-zoom="5.25">Iron on the Great Lakes</div>
+						<div class="step" data-lng="-84.45" data-lat="42.97" data-zoom="6.15">Major Inbound Ports</div>
+						<div class="step" data-lng="-86.2" data-lat="45.59" data-zoom="5.25">Iron on the Great Lakes</div>
 					</article>
 
 					<script
@@ -62,7 +62,7 @@
 				</section>
 			</div>
 
-			<div>Works cited</div>
+			<!-- <div>Works cited</div> -->
 			<footer>Adapted from Story theme by <a href="https://html5up.net/">HTML5 UP</a></footer>
 
 			<script type="module">
@@ -130,12 +130,17 @@
 Indiana Economic Digest, 2025</a>
 					`,
 					`
-					Farther down the lake system are yet more receiving ports, 
+					Farther down the lake system are yet more receiving ports, of which Gary was the leader in taconite in-shipments.
+					On average, however, Indiana Harbor has led the pack in taking in ore since 2014.
 					`,
 					`
-					SUMMARIZE ME
+					The domestic steel supply chain largely starts and ends in a relatively concentrated corner of the country.
 					<br><br>
-					Sth sth, energy efficiency and low emissions per ton-mile. OMG THE BOTTLENECK, THE AGING INFRASTRUCTURE.
+					Disruptions to iron ore production out of Minnesota and Michigan are demonstrably a possibility.
+					The two-lane-wide channel that is the <strong>Soo Locks</strong> facilitates the passage of behemoth vessels,
+						but it is also a bottleneck where maintenance disruptions can cause considerable delays.
+					<br><br>
+					The supply chain <i>also</i> hinges on a concentrated corner of the region.
 					`
 				]
 				
@@ -188,7 +193,7 @@ Indiana Economic Digest, 2025</a>
 					"Presque Isle, MI": "#D95F02",
 					"Marquette, MI": "#1b9e77",
 
-					"default": "#C46F60" // default
+					"default": "#4477aa" // default
 				};
 
 				// AI Use (ChatGPT): "Preferred approach for scrollytelling with scrollama and maplibre events?" 
@@ -198,7 +203,7 @@ Indiana Economic Digest, 2025</a>
 				map.on('load', async () => {
 					// Charts
 					// buildCargoChart(dCargo);
-					buildStackedCargoChart(oCargo);
+					// buildStackedCargoChart(oCargo);
 
 					// Prevent my layers from covering up basemap city names; bring city names up
 					map.on('styledata', () => {
@@ -312,7 +317,7 @@ Indiana Economic Digest, 2025</a>
 						"Presque Isle, MI", "#D95F02",
 						"Marquette, MI", "#1b9e77",
 
-						"#C46F60" // default
+						"#4477aa" // default
 					]);
 					
 
@@ -478,6 +483,7 @@ Indiana Economic Digest, 2025</a>
 								// 	animateRoute('Duluth_to_Gary', duluthGaryCoords, routeCheckpoints[i]);
 								// })
 								
+								buildStackedCargoChart(oCargo);
 								document.getElementById("map-chart-overlay").classList.add("visible");
 								text_overlay.classList.remove('top-left');
 								text_overlay.classList.remove('bottom-middle');
@@ -532,11 +538,11 @@ Indiana Economic Digest, 2025</a>
 								document.getElementById('map-chart-overlay').classList.add('visible');
 							}
 							// Step 8: Summary
-							else if (i === 6) {
+							else if (i === 7) {
 								// map.setPaintProperty('mnmi-fill', 'fill-opacity', 0.0);
 								map.setLayoutProperty('USACE_Ports_Labels', 'text-size', 10)
 								text_overlay.classList.remove('bottom-middle');
-								text_overlay.classList.add('bottom-left');
+								text_overlay.classList.add('top-right');
 								document.getElementById('map-chart-overlay').classList.remove('visible');
 							}
 
@@ -887,7 +893,7 @@ Indiana Economic Digest, 2025</a>
 					const latest = d3.max(data, d => +d.CompletedYear);
 					const filtered = data.filter(d => +d.CompletedYear === latest);
 
-					const margin = {top: 20, right: 20, bottom: 100, left: 70};
+					const margin = {top: 20, right: 20, bottom: 90, left: 100};
 					const width = 420;
 					const height = 260;
 
@@ -907,6 +913,16 @@ Indiana Economic Digest, 2025</a>
 						.domain([0, d3.max(filtered, d => +d.ShortTons)])
 						.nice()
 						.range([height - margin.bottom, margin.top]);
+
+					
+					svg.append("g")
+						.attr("transform", `translate(${margin.left},0)`)
+						.call(
+							d3.axisLeft(y)
+							.tickSize(-(width - margin.left - margin.right))
+							.tickFormat("")
+						)
+						.attr("stroke-opacity", 0.2);
 
 					svg.selectAll("rect")
 						.data(filtered)
@@ -928,16 +944,28 @@ Indiana Economic Digest, 2025</a>
 					svg.append("g")
 						.attr("transform", `translate(${margin.left},0)`)
 						.call(d3.axisLeft(y).tickFormat(d3.format(".2s")));
-					}
+
+						
+					svg.append("text")
+						.attr("x", margin.left / 2)
+						.attr("y", height / 2)
+						.attr("text-anchor", "middle")
+						.attr("transform", `rotate(-90, ${margin.left / 2}, ${height / 2})`)
+						.style("font-size", "11px")
+						.text("Tonnage (Short tons)");
+
+
+					svg.append("text")
+						.attr("x", width / 2)
+						.attr("y", margin.top - 6)
+						.attr("text-anchor", "middle")
+						.style("font-size", "14px")
+						.style("font-weight", "bold")
+						.text(`Inbound Iron Ore (Latest Year: ${latest})`);
+
+
+				}
 				
-					svg.append("g")
-					.attr("transform", `translate(${margin.left},0)`)
-					.call(
-						d3.axisLeft(y)
-						.tickSize(-(width - margin.left - margin.right))
-						.tickFormat("")
-					)
-					.attr("stroke-opacity", 0.2);
 				
 
 				window.addEventListener('resize', scroller.resize);
