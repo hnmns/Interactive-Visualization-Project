@@ -18,11 +18,12 @@
 		<!-- <div id="wrapper" class="divided"> --> 
             <section class="banner style1 orient-left content-align-left image-position-right fullscreen onload-image-fade-in onload-content-fade-right">
                 <div class="content">
-                    <h1>US iron ore shipping on the Great Lakes</h1>
-                    <p class="major">MOVE TO END Adapted from Story theme by <a href="https://html5up.net">HTML5 UP</a>.</p>
+                    <h1>Shippin' Ore on the Great Lakes</h1>
+					<h2></h2>
+					<p>Prepared by Riley</p>
                 </div>
                 <div class="image">
-                    <img src="images/PaulRTregurtha_by_GusSchauer.jpg" alt="" />
+                    <img src="images/PaulRTregurtha_by_GusSchauer.jpg" alt="Paul R Tregurtha - largest laker" />
                 </div>
             </section>
 
@@ -34,10 +35,10 @@
 						<div class="step" data-lng="-110.08" data-lat="39.58" data-zoom="3">Iron in the US</div>
 						<div class="step" data-lng="-91.95" data-lat="46.78" data-zoom="7">Duluth-Superior</div>
 						<div class="step" data-lng="-89.8" data-lat="46.50" data-zoom="7">Major Outbound Ports - Cargo</div>
-						<div class="step" data-lng="-88.03" data-lat="46.02" data-zoom="6.2">Major Outbound Ports - Route</div>
-						<div class="step" data-lng="-84.34" data-lat="46.25" data-zoom="7">Soo Locks</div>
-						<div class="step" data-lng="-86.95" data-lat="41.85" data-zoom="8">Indiana Harbor</div>
-						<div class="step" data-lng="-84.75" data-lat="43.87" data-zoom="6">Major Inbound Ports</div>
+						<div class="step" data-lng="-88.03" data-lat="46.02" data-zoom="6">Major Outbound Ports - Route</div>
+						<div class="step" data-lng="-84.94" data-lat="46.15" data-zoom="6.5">Soo Locks</div>
+						<div class="step" data-lng="-86.95" data-lat="41.85" data-zoom="8">Indiana Destinations</div>
+						<div class="step" data-lng="-84.45" data-lat="42.37" data-zoom="6.8">Major Inbound Ports</div>
 						<div class="step" data-lng="-87.25" data-lat="45.59" data-zoom="5.25">Iron on the Great Lakes</div>
 					</article>
 
@@ -60,6 +61,9 @@
 					</figure>
 				</section>
 			</div>
+
+			<div>Works cited</div>
+			<footer>Adapted from Story theme by <a href="https://html5up.net/">HTML5 UP</a></footer>
 
 			<script type="module">
 				const map = new maplibregl.Map({
@@ -90,28 +94,43 @@
 					`
 					How does the ore reach steel mills?
 					<br><br>
-					Rail moves <i>taconite</i> iron pellets overland to and from ports, and lake freighters as long as 1000 feet carry it over water.
+					Rail moves <i>taconite</i> iron pellets overland from mine to port, and lake freighters as long as <strong>1000 feet</strong> carry it over water.
 					<br><br>
 					The <strong>Port of Duluth-Superior</strong> is a major origin for these "laker" vessels, such as the 767-foot <i>Arthur M. Anderson</i>, whose July 2021 voyage to Gary, Indiana, is shown here.
 					`,
 					`
-					US Army Corps of Engineers (USACE) reports their port areas' tonnages annually.
+					The US Army Corps of Engineers (USACE) reports tonnages by port annually<sup>2</sup>. 
+					The Duluth-Superior and Two Harbors routinely lead the top three ports in tonnage, with pandemic-era shocks slowing them all.
 					<br><br>
-					COMMENT ON MN PORTS BIGGEST & THE SALIENT DIPS
+					<span style="display:block; font-size:0.75em; color:#666; margin-top:0.6em;">
+						<sup>2</sup>USACE Waterborne Commerce Statistics Center, Ports and Waterways Page
+					</span>
 					`,
 					`
 					Vessels from smaller, non-Corps ports like Silver Bay and Taconite carry ore on a similar route down Superior.
-					They have a common waypoint in Sault Ste. Marie, Michigan: <strong>The Soo Locks</strong>, a pair of massive structures 
+					They have a common waypoint in <strong>Sault Ste. Marie</strong>, Michigan: <strong>The Soo Locks</strong>, a pair of massive structures 
 					that allow ships to traverse the change in elevation from Lake Superior to the lower lakes.
 					`,
 					`
-					Talk about Soo Locks
+					In 2023, the Soo Locks took <strong><span style="color:#4477aa;">381</span></strong> deep-draft ships down and 77 up. That was a low-traffic year for lockages since 2014. 
+					In fact, 381 outbound lockages is a <strong>44%</strong> drop from the 2014-2022 average.
+					<br><br>
+					This is heavily dramatized, showing a year's worth of deep-draft traffic in one place; ships are never backed up this much.
+					<br><br>
+					It <i>seems</i> like there are fewer ships coming back, but once a ship unloads and make a return trip, 
+					its apparent draft (the distance it reaches below the water) drops.
 					`,
 					`
-					Talk about Burns? IN Harbor? I forgot.
+					Finally, at the end of this particular voyage is Gary, Indiana. 
+					Gary Harbor is one of multiple named ports in the district that feed into functionally adjacent steel mills.
+					<br><br>
+					Indiana is the largest steel producer in the nation<sup>3</sup>.
+					<br><br>
+					<sup>3</sup><a "href=https://indianaeconomicdigest.net/MobileContent/Most-Recent/Lake/Article/Indiana-leads-nation-in-steel-production-continuing-reign-as-top-steelmaking-state/31/198/118326">
+Indiana Economic Digest, 2025</a>
 					`,
 					`
-					Talk about inbound ports.
+					Farther down the lake system are yet more receiving ports, 
 					`,
 					`
 					SUMMARIZE ME
@@ -150,7 +169,17 @@
 					"ShortTons":+d.ShortTons
 					}
 				});
-				console.log(oCargo);
+				// console.log(oCargo);
+
+				const inportCargo = await d3.csv('data/clean/cargoes/wcus_inport_cargoes.csv');
+				const iCargo = inportCargo.map(d => {
+					return {
+					"WaterwayName":d.WaterwayName,
+					"CompletedYear":d.CompletedYear,
+					"ShortTons":+d.ShortTons
+					}
+				});
+				// console.log(iCargo);
 
 				// pink, purple, orange, green
 				const portColors = {
@@ -451,10 +480,11 @@
 								
 								document.getElementById("map-chart-overlay").classList.add("visible");
 								text_overlay.classList.remove('top-left');
+								text_overlay.classList.remove('bottom-middle');
 								text_overlay.classList.add('bottom-left');
 								// text_overlay.
 							}
-							// Step 4: Major Outbound ports - Cargo
+							// Step 4: Major Outbound ports - Route
 							else if (i === 3) {
 								map.setPaintProperty('Duluth_to_Gary', 'line-opacity', 1.0)
 								
@@ -481,27 +511,33 @@
 								// 	animateRoute('Duluth_to_Gary', duluthGaryCoords, routeCheckpoints[i]);
 								// })
 								// drawPictograph(805);
-								animateSooLocksPictograph(103);
-								document.getElementById('pictograph').classList.add('visible');
+								animateSooLocksPictograph(381);
+								// document.getElementById('pictograph').classList.add('visible');
 								document.getElementById('pictograph-locks').classList.add('visible');
+								text_overlay.classList.remove('bottom-middle');
+								text_overlay.classList.add('top-right');
 							}
 							// Step 6: Indiana Harbor
 							else if (i === 5) {
 								// map.setPaintProperty('mnmi-fill', 'fill-opacity', 0.0);
 								document.getElementById('pictograph').classList.remove('visible');
 								document.getElementById('pictograph-locks').classList.remove('visible');
+								document.getElementById('map-chart-overlay').classList.remove('visible');
 							}
-							// Step 7: Inbound ports
+							// Step 7: Major Inbound ports
 							else if (i === 6) {
 								// map.setPaintProperty('mnmi-fill', 'fill-opacity', 0.0);
 								map.setLayoutProperty('USACE_Ports_Labels', 'text-size', 10)
-								
+								buildInboundBarChart(iCargo);
+								document.getElementById('map-chart-overlay').classList.add('visible');
 							}
 							// Step 8: Summary
 							else if (i === 6) {
 								// map.setPaintProperty('mnmi-fill', 'fill-opacity', 0.0);
 								map.setLayoutProperty('USACE_Ports_Labels', 'text-size', 10)
-								
+								text_overlay.classList.remove('bottom-middle');
+								text_overlay.classList.add('bottom-left');
+								document.getElementById('map-chart-overlay').classList.remove('visible');
 							}
 
 							
@@ -710,7 +746,7 @@
 					.style("font-size", "10pt")
 					.call(g => g.append("text")
 						.attr("transform", `translate(${width/2},${margin})`)
-						.text("Outbound Iron Ore Cargoes from USACE Ports")
+						.text("Outbound Iron Ore Cargoes in Great Lakes Corps Ports")
 						.attr("fill", "black")
 						.style("font-size", "12pt")
 						.style("font-weight", "bold")
@@ -769,80 +805,139 @@
 							// .attr("r", iconSize/2);
 				}
 
-				function animateSooLocksPictograph(shipCount) {
-  
-					const width = 600;
-					const height = 500;
 
-					const iconSize = 10;
-					const padding = 6;
+				function animateSooLocksPictograph(shipCount) {
+
+					const width = 1600
+					const height = 900;
+
+					const iconSize = 8;
+					const padding = 5;
 
 					const svg = d3.select("#pictograph-locks")
 						.html("")
 						.append("svg")
-						.attr("width", width)
-						.attr("height", height);
+						.attr("width", "100%")
+						.attr("height", "100%")
+						.attr("viewBox", `0 0 ${width} ${height}`);
 
-					const data = d3.range(shipCount);
+					const data = d3.range(shipCount).reverse();
 
-					const outboundCols = 10;
-					const inboundCols = 10;
-					const lockCols = 5;   // bottleneck!
-
-					// Outbound grid (left)
-					function posOutbound(i) {
+					const cols = 35;
+					function posGrid(i) {
 						return {
-							x: 50 + (i % outboundCols) * (iconSize + padding),
-							y: 40+ Math.floor(i / outboundCols) * (iconSize + padding)
+							x: 280 + (i % cols) * (iconSize + padding),
+							y: 20 + Math.floor(i / cols) * (iconSize + padding) + 0.35*(40 + (i % cols) * (iconSize + padding))
 						};
 					}
 
-					// Lock squeeze position (middle)
-					function posLock(i) {
+					const lockX = 0.5 * width;
+					const lockY = 0.415 * height;
+
+					function posExit(i) {
 						return {
-							x: width / 2,
-							y: 180 + (i % lockCols) * (iconSize + padding)
+							x: 0.58*width - (i % cols) * (iconSize + padding),
+							y: 500 + Math.floor(i / cols) * (iconSize + padding)
 						};
 					}
 
-					// Inbound grid (right)
-					function posInbound(i) {
-						return {
-							x: width - 200 + (i % inboundCols) * (iconSize + padding),
-							y: 250 + Math.floor(i / inboundCols) * (iconSize + padding)
-						};
-					}
-
-					// Create circles
+					
 					const ships = svg.selectAll("circle")
 						.data(data)
 						.join("circle")
-							.attr("r", 0)
-							.attr("fill", "#4477aa")
-							.attr("cx", d => posOutbound(d).x)
-							.attr("cy", d => posOutbound(d).y);
+						.attr("r", 0)
+						.attr("fill", "#4477aa")
+						.attr("cx", d => posGrid(d).x)
+						.attr("cy", d => posGrid(d).y)
+						.attr("opacity", 1);
 
-					// Stage 1 — appear in outbound grid
-					ships.transition()
-						.delay((d, i) => i * 5)
-						.duration(800)
+					
+					ships
+						// initial grid
+						.transition()
+						.duration(1500)
 						.attr("r", iconSize / 2)
+
+						// to lock
 						.transition()
-						.duration(800)
-						.attr("cx", d => posLock(d).x - 50)
-						.attr("cy", d => posLock(d).y)
-						.transition()
-						.duration(1200)
-						.attr("cx", d => posLock(d).x)
-						.attr("cy", d => posLock(d).y)
-						.transition()
-						.duration(800)
-						.attr("cx", d => posInbound(d).x)
-						.attr("cy", d => posInbound(d).y)
+						.delay((d, i) => i * 40)
+						.duration(100)
+						.attr("cx", lockX - 20)
+						.attr("cy", lockY)
+
+						// through lock
 						.transition()
 						.duration(300)
-						.attr("fill", "#66aa55");
+						.attr("cx", lockX + 20)
+						.attr("cy", lockY)
+
+						// to other side
+						.transition()
+						.duration(100)
+						.attr("cx", (d, i) => posExit(i).x)
+						.attr("cy", (d, i) => posExit(i).y)
+						.attr("fill", "#4477aa");
 				}
+
+
+				function buildInboundBarChart(data) {
+					// Clear out previous chart
+					d3.select("#map-chart-overlay").html("");
+
+					const latest = d3.max(data, d => +d.CompletedYear);
+					const filtered = data.filter(d => +d.CompletedYear === latest);
+
+					const margin = {top: 20, right: 20, bottom: 100, left: 70};
+					const width = 420;
+					const height = 260;
+
+					const svg = d3.select("#map-chart-overlay")
+						.append("svg")
+						.attr("viewBox", `0 0 ${width} ${height}`)
+						.style("width", "100%")
+						.style("height", "auto")
+						.style("background", "#ffffffdd");
+
+					const x = d3.scaleBand()
+						.domain(filtered.map(d => d.WaterwayName))
+						.range([margin.left, width - margin.right])
+						.padding(0.1);
+
+					const y = d3.scaleLinear()
+						.domain([0, d3.max(filtered, d => +d.ShortTons)])
+						.nice()
+						.range([height - margin.bottom, margin.top]);
+
+					svg.selectAll("rect")
+						.data(filtered)
+						.join("rect")
+						.attr("x", d => x(d.WaterwayName))
+						.attr("y", d => y(+d.ShortTons))
+						.attr("width", x.bandwidth())
+						.attr("height", d => y(0) - y(+d.ShortTons))
+						.attr("fill", "#4477aa");
+
+					svg.append("g")
+						.attr("transform", `translate(0,${height - margin.bottom})`)
+						.call(d3.axisBottom(x))
+						.selectAll("text")
+						.attr("transform", "rotate(-40)")
+						.style("text-anchor", "end")
+						.style("font-size", "9px");
+
+					svg.append("g")
+						.attr("transform", `translate(${margin.left},0)`)
+						.call(d3.axisLeft(y).tickFormat(d3.format(".2s")));
+					}
+				
+					svg.append("g")
+					.attr("transform", `translate(${margin.left},0)`)
+					.call(
+						d3.axisLeft(y)
+						.tickSize(-(width - margin.left - margin.right))
+						.tickFormat("")
+					)
+					.attr("stroke-opacity", 0.2);
 				
 
 				window.addEventListener('resize', scroller.resize);

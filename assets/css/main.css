@@ -3472,8 +3472,8 @@ input, select, textarea {
 			-webkit-flex-shrink: 1;
 			-ms-flex-shrink: 1;
 			flex-shrink: 1;
-			width: 50%;
-			max-width: 48rem;
+			/* width: 50%; */
+			/* max-width: 48rem; */
 			margin: 0 auto;
 		}
 
@@ -3486,8 +3486,10 @@ input, select, textarea {
 			-webkit-flex-shrink: 0;
 			-ms-flex-shrink: 0;
 			flex-shrink: 0;
+			flex: 1 1 67% !important;
+			max-width: 67% !important;
 			border-radius: 0;
-			width: 50%;
+			/* width: 50%; */
 		}
 
 			.banner.style1 .image img {

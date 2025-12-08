@@ -10,6 +10,28 @@
 overflow: visible !important;
 }
 
+.banner.style1 {
+  display: flex !important;
+  align-items: stretch;
+}
+
+.banner.style1 > .content{
+  flex: 1 1 40% !important;
+  max-width: 40% !important;
+  padding-right: 2rem !important;
+}
+
+.banner.style1 > .image {
+  flex: 1 1 60% !important;
+  max-width: 60% !important;
+}
+
+.banner.style1 > .image img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
 #map-section {
   position: relative;
   overflow: visible;
@@ -33,7 +55,7 @@ overflow: visible !important;
 #overlay-container {
   position: absolute;
   inset: 0;
-  pointer-events: none;
+  /* pointer-events: none; */
   /* display: flex;
   flex-direction: column; */
 }
@@ -50,7 +72,7 @@ overflow: visible !important;
   border-radius: 0px;
   opacity: 0;
   transition: opacity 1.0s ease-in-out;
-  pointer-events: none;
+  /* pointer-events: none; */
   z-index: 10;
 }
 #map-text-overlay.visible {
@@ -62,10 +84,16 @@ overflow: visible !important;
   bottom: auto !important;
   right: auto !important;
 }
+#map-text-overlay.top-right {
+  top: 10% !important;
+  left: auto !important;
+  bottom: auto !important;
+  right: 2.5% !important;
+}
 #map-text-overlay.bottom-left {
   top: auto !important;
-  left: 5% !important;
-  bottom: 20% !important;
+  left: 2.5% !important;
+  bottom: 10% !important;
   right: auto !important;
 }
 #map-text-overlay.bottom-middle {
@@ -121,9 +149,11 @@ overflow: visible !important;
 
 #pictograph-locks {
   position: absolute;
-  top: 50%;
-  right: 50%;
-  transform: translate(50%, -50%); /*Center the overlay using top and right wrt to its center!*/
+  /* top: 55%;
+  right: 45%;
+  transform: translate(50%, -50%); Center the overlay using top and right wrt to its center! */
+  width: 100vw;
+  height: 100vh;
   /* min-width: 32vw;
   max-width: 40vw; */
   /* background: rgba(255, 255, 255, 0.9); */
