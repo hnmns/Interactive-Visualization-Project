@@ -83,7 +83,7 @@ Indiana Economic Digest, 2025</a>
 ]
 
 // Real Arthur M. Anderson route from Duluth to Gary in 2021
-const routeData = await (await fetch("data/geodata/arthurmanderson_duluth_to_gary_line_CLEAN.geojson")).json();
+const routeData = await (await fetch("data/geodata/arthurmanderson_Duluth_to_Gary_Line_CLEAN.geojson")).json();
 let duluthGaryCoords = [];
 duluthGaryCoords = routeData.features[0].geometry.coordinates;
 let routeProgress = { progress: 0 }; // idx of current coordinate
