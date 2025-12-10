@@ -3,13 +3,12 @@ export function buildStackedCargoChart(dataCargo, portColors){
     // Ensure chart container is empty
     d3.select("#map-chart-overlay").html("");
     
-    let width = 400;
-    let height = 300;
-    let margin = 40;
-    let barwidth = 20;
+    const width = 400;
+    const height = 300;
+    const margin = 40;
 
     // Fluid SVG size, fit to its container
-    let div_chart = d3
+    const div_chart = d3
         .select("#map-chart-overlay")
         .append("svg")
         .attr("viewBox", `${-20} ${-20} ${width+2*margin} ${height+2*margin}`)
@@ -49,16 +48,16 @@ export function buildStackedCargoChart(dataCargo, portColors){
     div_chart.append("g")
         .attr("transform", `translate(${margin},0)`)
         .selectAll("g")
-        .data(series)
-        .join("g")
-            .attr("fill", d => color(d.key))
+            .data(series)
+            .join("g")
+                .attr("fill", d => color(d.key))
         .selectAll("rect")
-        .data(d => d)
-        .join("rect")
-            .attr("x", d => xScale(d.data[0]))
-            .attr("y", d => yScale(d[1]))
-            .attr("height", d => yScale(d[0]) - yScale(d[1]))
-            .attr("width", xScale.bandwidth());
+            .data(d => d)
+            .join("rect")
+                .attr("x", d => xScale(d.data[0]))
+                .attr("y", d => yScale(d[1]))
+                .attr("height", d => yScale(d[0]) - yScale(d[1]))
+                .attr("width", xScale.bandwidth());
 
     // x Axis
     div_chart.append("g")
