@@ -10,13 +10,14 @@
 		<script src='https://unpkg.com/maplibre-gl@5.13.0/dist/maplibre-gl.js'></script>
 		<script src="scrollama.js" type="text/javascript"></script>
 		<script src="https://d3js.org/d3.v7.min.js"></script>
+
 	</head>
 
 	<body class="is-preload">
 
 		<section class="banner style1 orient-left content-align-left image-position-right fullscreen onload-image-fade-in onload-content-fade-right">
 			<div class="content">
-				<h1>Shippin' Iron on the Great Lakes</h1>
+				<h1>Shipping Iron on the Great Lakes</h1>
 				<h2></h2>
 				<p>Prepared by Riley</p>
 			</div>
@@ -63,13 +64,23 @@
 			<br>
 			Basetiles: OpenFreeMap © OpenMapTiles Data from OpenStreetMap
 			<br>
-			Great Lakes Port Statistical Areas: <a href="https://geospatial-usace.opendata.arcgis.com/datasets/b7fd6cec8d8c43e4a141d24170e6d82f_0/explore?location=34.833304%2C-97.027303%2C4.92">USACE Geospatial Open Data</a>
+			Great Lakes Port Statistical Areas: 
+				<a href="https://geospatial-usace.opendata.arcgis.com/datasets/b7fd6cec8d8c43e4a141d24170e6d82f_0/explore?location=34.833304%2C-97.027303%2C4.92">
+					USACE Geospatial Open Data
+				</a>
 			<br>
-			Great Lakes Ports Cargo: U.S. Army Corps of Engineers Digital Library "[2000-2022 Cargo] Manuscript cargo and trips data files, statistics on foreign and domestic waterborne commerce move on the United States waters"
+			Great Lakes Ports Cargo: U.S. Army Corps of Engineers Digital Library 
+				<a href="https://usace.contentdm.oclc.org/digital/collection/p16021coll2/id/14572/rec/2">
+					[2000-2022 Cargo] Manuscript cargo and trips data files, statistics on foreign and 
+					domestic waterborne commerce move on the United States waters"
+				</a>
 			<br>
 			Great Lakes Ports Trips: <a href="https://ndc.ops.usace.army.mil/wcsc/webpub/#/">USACE Ports and Waterways Page</a>
 			<br>
-			US state borders: <a href="https://github.com/PublicaMundi/MappingAPI/blob/master/data/geojson/us-states.json">https://github.com/PublicaMundi/MappingAPI/blob/master/data/geojson/us-states.json</a>
+			US state borders: 
+				<a href="https://github.com/PublicaMundi/MappingAPI/blob/master/data/geojson/us-states.json">
+					https://github.com/PublicaMundi/MappingAPI/blob/master/data/geojson/us-states.json
+				</a>
 			<br>
 			US-Canada border: 2023 TIGER/Line Shapefiles (US Census)
 			<br>
@@ -825,12 +836,12 @@ Indiana Economic Digest, 2025</a>
 					.style("height", "auto")
 					.style("background", "#ffffffdd");
 
-				const x = d3.scaleBand()
+				const xScale = d3.scaleBand()
 					.domain(filtered.map(d => d.WaterwayName))
 					.range([margin.left, width - margin.right])
 					.padding(0.1);
 
-				const y = d3.scaleLinear()
+				const yScale = d3.scaleLinear()
 					.domain([0, d3.max(filtered, d => +d.ShortTons)])
 					.nice()
 					.range([height - margin.bottom, margin.top]);
@@ -839,7 +850,7 @@ Indiana Economic Digest, 2025</a>
 				svg.append("g")
 					.attr("transform", `translate(${margin.left},0)`)
 					.call(
-						d3.axisLeft(y)
+						d3.axisLeft(yScale)
 						.tickSize(-(width - margin.left - margin.right))
 						.tickFormat("")
 					)
@@ -848,15 +859,15 @@ Indiana Economic Digest, 2025</a>
 				svg.selectAll("rect")
 					.data(filtered)
 					.join("rect")
-					.attr("x", d => x(d.WaterwayName))
-					.attr("y", d => y(+d.ShortTons))
-					.attr("width", x.bandwidth())
-					.attr("height", d => y(0) - y(+d.ShortTons))
+					.attr("x", d => xScale(d.WaterwayName))
+					.attr("y", d => yScale(+d.ShortTons))
+					.attr("width", xScale.bandwidth())
+					.attr("height", d => yScale(0) - yScale(+d.ShortTons))
 					.attr("fill", "#4477aa");
 
 				svg.append("g")
 					.attr("transform", `translate(0,${height - margin.bottom})`)
-					.call(d3.axisBottom(x))
+					.call(d3.axisBottom(xScale))
 					.selectAll("text")
 					.attr("transform", "rotate(-40)")
 					.style("text-anchor", "end")
@@ -864,7 +875,7 @@ Indiana Economic Digest, 2025</a>
 
 				svg.append("g")
 					.attr("transform", `translate(${margin.left},0)`)
-					.call(d3.axisLeft(y).tickFormat(d3.format(".2s")));
+					.call(d3.axisLeft(yScale).tickFormat(d3.format(".2s")));
 
 					
 				svg.append("text")
@@ -886,10 +897,11 @@ Indiana Economic Digest, 2025</a>
 
 
 			}
-			
 			window.addEventListener('resize', scroller.resize);
 
 		</script>
+		
+		<!-- <script type="module" src="js/main.js"></script> -->
 
 		<script src="assets/js/jquery.min.js"></script>
 		<script src="assets/js/jquery.scrollex.min.js"></script>
