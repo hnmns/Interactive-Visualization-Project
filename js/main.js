@@ -20,7 +20,7 @@ const text_overlay_list = [
     98% of this tonnage will go toward making steel.
     <br><br>
     <span style="display:block; font-size:0.75em; color:#666; margin-top:0.6em;">
-        <sup>1</sup>Utah intermittently appears on U.S. Geological Survey"s Mineral Commodity Summaries, with mining operations in the state being suspended as recently as 2025.
+        <sup>1</sup>Utah intermittently appears on U.S. Geological Survey's Mineral Commodity Summaries, with mining operations in the state being suspended as recently as 2025.
     </span>
     `,
     `
